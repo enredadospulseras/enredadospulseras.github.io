@@ -1,0 +1,2 @@
+
+import '/includes/firebase.js'
