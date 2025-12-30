@@ -1,0 +1,497 @@
+/* CSS ADICIONAL PARA LA PÁGINA NOSOTROS */
+/* Agregar estos estilos al archivo style.css existente */
+
+/* Hero específico para Nosotros */
+.hero-nosotros {
+    min-height: 40vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Nosotros mejorado */
+.nosotros {
+    background: linear-gradient(135deg, var(--blanco) 0%, rgba(255, 245, 248, 0.9) 100%);
+    border-radius: 25px;
+    box-shadow: 0 10px 40px var(--sombra);
+    margin: 5rem auto;
+    padding: 6rem 4rem;
+    max-width: 120rem;
+    border: 2px solid rgba(255, 182, 217, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.nosotros::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--secundario), var(--acento), var(--secundario));
+}
+
+.nosotros_contenido {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4rem;
+    align-items: start;
+}
+
+@media (min-width: 768px) {
+    .nosotros_contenido {
+        grid-template-columns: 300px 1fr;
+        gap: 5rem;
+    }
+}
+
+.nosotros_imagen-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: sticky;
+    top: 120px;
+}
+
+.nosotros_imagen {
+    width: 220px;
+    height: 220px;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 20px var(--sombraOscura));
+    animation: floatImage 6s ease-in-out infinite;
+}
+
+@media (min-width: 768px) {
+    .nosotros_imagen {
+        width: 280px;
+        height: 280px;
+    }
+}
+
+@keyframes floatImage {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+.nosotros_texto {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+}
+
+.texto_bloque {
+    background: var(--blanco);
+    padding: 3rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(255, 105, 180, 0.1);
+    transition: all 0.3s ease;
+}
+
+.texto_bloque:hover {
+    transform: translateX(5px);
+    box-shadow: 0 6px 25px var(--sombra);
+}
+
+.texto_subtitulo {
+    font-size: 2.8rem;
+    font-family: var(--fuentePrincipal);
+    color: var(--secundario);
+    margin-bottom: 2rem;
+    letter-spacing: 1px;
+}
+
+.texto_bloque p {
+    font-size: 1.8rem;
+    line-height: 1.9;
+    color: var(--negro);
+    margin-bottom: 1.5rem;
+    text-align: justify;
+}
+
+.texto_bloque p:last-child {
+    margin-bottom: 0;
+}
+
+/* Sección Valores */
+.valores {
+    padding: 6rem 2rem;
+    margin: 6rem 0;
+}
+
+.valores_titulo {
+    font-size: 4rem;
+    font-family: var(--fuentePrincipal);
+    color: var(--secundario);
+    text-align: center;
+    margin-bottom: 5rem;
+    letter-spacing: 1.5px;
+}
+
+.valores_grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 3rem;
+    max-width: 120rem;
+    margin: 0 auto;
+}
+
+.valor {
+    background: linear-gradient(135deg, var(--blanco) 0%, var(--primarioOscuro) 100%);
+    padding: 4rem 2.5rem;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 8px 25px var(--sombra);
+    border: 2px solid rgba(255, 182, 217, 0.3);
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.valor::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--secundario), var(--acento));
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+
+.valor:hover::before {
+    transform: scaleX(1);
+}
+
+.valor:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px var(--sombraOscura);
+    border-color: var(--secundario);
+}
+
+.valor_icono {
+    font-size: 6rem;
+    margin-bottom: 2rem;
+    animation: pulse 3s ease-in-out infinite;
+}
+
+.valor:nth-child(1) .valor_icono { animation-delay: 0s; }
+.valor:nth-child(2) .valor_icono { animation-delay: 0.5s; }
+.valor:nth-child(3) .valor_icono { animation-delay: 1s; }
+.valor:nth-child(4) .valor_icono { animation-delay: 1.5s; }
+
+.valor h3 {
+    font-size: 2.6rem;
+    color: var(--secundarioOscuro);
+    margin-bottom: 1.5rem;
+    font-family: var(--fuentePrincipal);
+    letter-spacing: 1px;
+}
+
+.valor p {
+    font-size: 1.7rem;
+    color: var(--gris);
+    line-height: 1.6;
+}
+
+/* Sección Proceso */
+.proceso {
+    background: linear-gradient(135deg, var(--acentoClaro) 0%, var(--blanco) 100%);
+    padding: 6rem 2rem;
+    margin: 6rem 0;
+    border-radius: 25px;
+}
+
+.proceso_titulo {
+    font-size: 4rem;
+    font-family: var(--fuentePrincipal);
+    color: var(--secundario);
+    text-align: center;
+    margin-bottom: 5rem;
+    letter-spacing: 1.5px;
+}
+
+.proceso_grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 3rem;
+    max-width: 120rem;
+    margin: 0 auto;
+}
+
+.proceso_paso {
+    background: var(--blanco);
+    padding: 4rem 2.5rem;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 6px 20px var(--sombra);
+    transition: all 0.3s ease;
+    position: relative;
+    border: 2px solid transparent;
+}
+
+.proceso_paso:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 35px var(--sombraOscura);
+    border-color: var(--acento);
+}
+
+.paso_numero {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, var(--secundario), var(--secundarioOscuro));
+    color: var(--blanco);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    font-family: var(--fuentePrincipal);
+    margin: 0 auto 2rem;
+    box-shadow: 0 5px 15px var(--sombraOscura);
+    transition: all 0.3s ease;
+}
+
+.proceso_paso:hover .paso_numero {
+    transform: scale(1.1) rotate(360deg);
+}
+
+.proceso_paso h3 {
+    font-size: 2.4rem;
+    color: var(--secundarioOscuro);
+    margin-bottom: 1.5rem;
+    font-family: var(--fuentePrincipal);
+}
+
+.proceso_paso p {
+    font-size: 1.6rem;
+    color: var(--gris);
+    line-height: 1.6;
+}
+
+/* Call to Action */
+.cta {
+    background: linear-gradient(135deg, var(--secundario) 0%, var(--secundarioOscuro) 100%);
+    padding: 6rem 2rem;
+    margin: 6rem 0;
+    border-radius: 25px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 40px var(--sombraOscura);
+}
+
+.cta::before {
+    content: '✨';
+    position: absolute;
+    font-size: 15rem;
+    opacity: 0.1;
+    top: -30px;
+    left: 10%;
+    animation: pulse 4s ease-in-out infinite;
+}
+
+.cta::after {
+    content: '💕';
+    position: absolute;
+    font-size: 15rem;
+    opacity: 0.1;
+    bottom: -30px;
+    right: 10%;
+    animation: pulse 4s ease-in-out infinite 2s;
+}
+
+.cta_contenido {
+    max-width: 70rem;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.cta_titulo {
+    font-size: 4.5rem;
+    font-family: var(--fuentePrincipal);
+    color: var(--blanco);
+    margin-bottom: 2rem;
+    letter-spacing: 2px;
+}
+
+.cta_texto {
+    font-size: 2rem;
+    color: rgba(255, 255, 255, 0.95);
+    margin-bottom: 3rem;
+    line-height: 1.6;
+}
+
+.cta_boton {
+    display: inline-block;
+    background: var(--blanco);
+    color: var(--secundario);
+    padding: 1.8rem 4rem;
+    border-radius: 50px;
+    font-size: 2rem;
+    font-family: var(--fuentePrincipal);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    letter-spacing: 1px;
+}
+
+.cta_boton:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    background: var(--acentoClaro);
+    color: var(--secundarioOscuro);
+}
+
+/* Responsive para Nosotros */
+@media (max-width: 768px) {
+    .nosotros {
+        padding: 4rem 2rem;
+        margin: 3rem 1rem;
+    }
+
+    .nosotros_contenido {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+
+    .nosotros_imagen-wrapper {
+        position: static;
+    }
+
+    .nosotros_imagen {
+        width: 200px;
+        height: 200px;
+    }
+
+    .texto_bloque {
+        padding: 2rem;
+    }
+
+    .texto_subtitulo {
+        font-size: 2.4rem;
+    }
+
+    .valores_titulo,
+    .proceso_titulo,
+    .cta_titulo {
+        font-size: 3rem;
+    }
+
+    .valores,
+    .proceso {
+        padding: 4rem 1rem;
+        margin: 4rem 1rem;
+    }
+
+    .cta {
+        margin: 4rem 1rem;
+        padding: 4rem 2rem;
+    }
+
+    .valor,
+    .proceso_paso {
+        padding: 3rem 2rem;
+    }
+}
+
+.nosotros {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4rem;
+    padding: 5rem 4rem;
+    background: linear-gradient(135deg, var(--blanco) 0%, rgba(255, 245, 248, 0.9) 100%);
+    border-radius: 20px;
+    box-shadow: 0 10px 40px var(--sombra);
+    margin: 4rem 2rem;
+    border: 2px solid rgba(255, 182, 217, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.nosotros::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--secundario), var(--acento), var(--secundario));
+}
+
+@media (min-width: 768px) {
+    .nosotros {
+        margin: 5rem auto;
+        max-width: 110rem;
+        padding: 6rem 7rem;
+    }
+}
+
+.nosotros_contenido {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.nosotros_imagen {
+    width: 220px;
+    height: 220px;
+    object-fit: contain;
+    margin-bottom: 3rem;
+    filter: drop-shadow(0 8px 20px var(--sombraOscura));
+    animation: floatImage 6s ease-in-out infinite;
+}
+
+@keyframes floatImage {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+@media (min-width: 768px) {
+    .nosotros_imagen {
+        width: 280px;
+        height: 280px;
+        margin-bottom: 4rem;
+    }
+}
+
+.nosotros_contenido p {
+    text-align: justify;
+    margin-bottom: 2rem;
+    line-height: 1.9;
+    font-size: 1.8rem;
+    color: var(--negro);
+}
+
+.nosotros_contenido p:last-child {
+    margin-bottom: 0;
+}
+
+/* Contenedor */
+.contenedor {
+    max-width: 120rem;
+    margin: 0 auto;
+    padding: 0 3rem;
+}
+
+/* Utilidades */
+p {
+    font-size: 1.8rem;
+    font-family: var(--fuenteTexto);
+    color: var(--negro);
+    font-weight: 400;
+}
+
+a {
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+img {
+    width: 100%;
+    display: block;
+}

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VueJS - Enredados</title>
+    <link rel="stylesheet" href="/static/css/normalize.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Krub:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&family=Staatliches&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/producto.css">
+    <link rel="icon" href="/favicon.png">
+</head>
+<body>
+
+    <div id="nav-placeholder"></div>
+
+    <main class="contenedor producto_detalle">
+        <!-- Breadcrumb -->
+        <div class="breadcrumb">
+            <a href="/index.html">Inicio</a>
+            <span class="separador">/</span>
+            <a href="/index.html">Productos</a>
+            <span class="separador">/</span>
+            <span>Pulsera de cuentas con letra personalizada</span>
+        </div>
+
+        <div class="producto_grid">
+            <!-- Carrusel de Imágenes -->
+            <div class="carrusel_container">
+                <div class="carrusel">
+                    <div class="carrusel_slides">
+                        <div class="carrusel_slide active">
+                            <img src="/static/img/productos/1.jpeg" alt="Vista 1">
+                        </div>
+                        <div class="carrusel_slide">
+                            <img src="/static/img/productos/1.1.jpeg" alt="Vista 2">
+                        </div>
+                        <div class="carrusel_slide">
+                            <img src="/static/img/productos/1.2.jpeg" alt="Vista 3">
+                        </div>
+                    </div>
+
+                    <!-- Botones de navegación -->
+                    <button class="carrusel_btn carrusel_btn-prev" aria-label="Imagen anterior">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M15 18l-6-6 6-6"/>
+                        </svg>
+                    </button>
+                    <button class="carrusel_btn carrusel_btn-next" aria-label="Imagen siguiente">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 18l6-6-6-6"/>
+                        </svg>
+                    </button>
+
+                    <!-- Indicadores -->
+                    <div class="carrusel_indicadores">
+                        <button class="indicador active" data-slide="0"></button>
+                        <button class="indicador" data-slide="1"></button>
+                        <button class="indicador" data-slide="2"></button>
+                    </div>
+                </div>
+
+                <!-- Miniaturas -->
+                <div class="miniaturas">
+                    <button class="miniatura active" data-slide="0">
+                        <img src="/static/img/productos/1.jpeg" alt="Miniatura 1">
+                    </button>
+                    <button class="miniatura" data-slide="1">
+                        <img src="/static/img/productos/1.1.jpeg" alt="Miniatura 2">
+                    </button>
+                    <button class="miniatura" data-slide="2">
+                        <img src="/static/img/productos/1.2.jpeg" alt="Miniatura 3">
+                    </button>
+                </div>
+            </div>
+
+            <!-- Información del Producto -->
+            <div class="producto_info">
+                <h1 class="producto_titulo">Pulsera de cuentas con letra personalizada</h1>
+                <p class="producto_precio_detalle">1.50€</p>
+                
+                <div class="producto_descripcion">
+                    <p>Pulsera artesanal hecha a mano con hilos de alta calidad. Diseño único inspirado en el framework VueJS, perfecta para desarrolladores y amantes de la tecnología.</p>
+                    <p>Cada pulsera es única y puede tener ligeras variaciones que la hacen especial.</p>
+                </div>
+
+                <!-- Selector de Color -->
+                <div class="variaciones">
+                    <h3 class="variaciones_titulo">Selecciona un color:</h3>
+                    <div class="colores">
+                        <button class="color_opcion active" data-color="Verde" style="background: linear-gradient(135deg, #42b883 0%, #347474 100%);" aria-label="Verde">
+                            <span class="check">✓</span>
+                        </button>
+                        <button class="color_opcion" data-color="Rosa" style="background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);" aria-label="Rosa">
+                            <span class="check">✓</span>
+                        </button>
+                        <button class="color_opcion" data-color="Azul" style="background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);" aria-label="Azul">
+                            <span class="check">✓</span>
+                        </button>
+                        <button class="color_opcion" data-color="Morado" style="background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);" aria-label="Morado">
+                            <span class="check">✓</span>
+                        </button>
+                        <button class="color_opcion" data-color="Naranja" style="background: linear-gradient(135deg, #ff9500 0%, #ff6b00 100%);" aria-label="Naranja">
+                            <span class="check">✓</span>
+                        </button>
+                        <button class="color_opcion" data-color="Negro" style="background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%);" aria-label="Negro">
+                            <span class="check">✓</span>
+                        </button>
+                    </div>
+                    <p class="color_seleccionado">Color seleccionado: <strong>Verde</strong></p>
+                </div>
+
+                <!-- Cantidad -->
+                <div class="cantidad_selector">
+                    <label for="cantidad">Cantidad:</label>
+                    <div class="cantidad_controles">
+                        <button class="cantidad_btn" id="decrementar">-</button>
+                        <input type="number" id="cantidad" value="1" min="1" max="10" readonly>
+                        <button class="cantidad_btn" id="incrementar">+</button>
+                    </div>
+                </div>
+
+                <!-- Botones de Acción -->
+                <div class="acciones">
+                    <button class="btn_agregar_carrito">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="9" cy="21" r="1"/>
+                            <circle cx="20" cy="21" r="1"/>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                        </svg>
+                        Agregar al carrito
+                    </button>
+                    <button class="btn_favorito" aria-label="Agregar a favoritos">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Características -->
+                <div class="caracteristicas_producto">
+                    <div class="caracteristica_item">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                            <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                        <span>Hecha a mano</span>
+                    </div>
+                    <div class="caracteristica_item">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                            <polyline points="22 4 12 14.01 9 11.01"/>
+                        </svg>
+                        <span>Materiales de calidad</span>
+                    </div>
+                    <div class="caracteristica_item">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polyline points="12 6 12 12 16 14"/>
+                        </svg>
+                        <span>Envío en 24-48h</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="/includes/nav.js"></script>
+    <script src="/includes/footer.js"></script>
+    <script src="/static/js/producto.js"></script>
+</body>
+</html>
