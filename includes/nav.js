@@ -1,27 +1,364 @@
+// ==================== NAVEGACIÓN ====================
 document.getElementById("nav-placeholder").innerHTML = `
     <nav class="navegacion">
-        <a href="index.html">
+        <a href="index.html" class="logo-link">
             <img class="header_logo" src="/static/img/logos/logo_completo.png" alt="Logotipo Enredados">
         </a>
 
-        <div class="navegacion_enlaces">
-            <a class="navegacion_enlace navegacion_enlace-activo" href="/index.html">Tienda</a>
-            <a class="navegacion_enlace" href="/pages/nosotros.html">Nosotros</a>
-            <a class="navegacion_enlace" href="#contacto">Contacto</a>
-        </div>
+        <!-- Botón hamburguesa para móvil -->
+        <button class="btn_hamburguesa" aria-label="Menú">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
 
-        <div class="navegacion_enlaces">
-            <button class="btn_usuario">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="usuario_icono"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg>
-            </button>
-            <button class="btn_carrito" aria-label="Carrito de compras">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="carrito_icono">
-                  <circle cx="9" cy="21" r="1"/>
-                  <circle cx="20" cy="21" r="1"/>
-                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-                </svg>
-                <span class="carrito_cantidad">0</span>
-            </button>
+        <!-- Menú de navegación -->
+        <div class="navegacion_menu">
+            <div class="navegacion_enlaces">
+                <a class="navegacion_enlace navegacion_enlace-activo" href="/index.html">Tienda</a>
+                <a class="navegacion_enlace" href="/pages/nosotros.html">Nosotros</a>
+                <a class="navegacion_enlace" href="#contacto">Contacto</a>
+            </div>
+
+            <div class="navegacion_acciones">
+                <button class="btn_usuario" aria-label="Usuario">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="usuario_icono">
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/>
+                    </svg>
+                    <span class="btn_texto">Cuenta</span>
+                </button>
+                <button class="btn_carrito" aria-label="Carrito de compras">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="carrito_icono">
+                        <circle cx="9" cy="21" r="1"/>
+                        <circle cx="20" cy="21" r="1"/>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                    </svg>
+                    <span class="carrito_cantidad">0</span>
+                </button>
+            </div>
         </div>
     </nav>
+
+    <!-- Modal de autenticación -->
+    <div class="modal_overlay" id="modal-auth">
+        <div class="modal_contenido">
+            <button class="modal_cerrar" aria-label="Cerrar">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+
+            <!-- Tabs para cambiar entre Login y Registro -->
+            <div class="auth_tabs">
+                <button class="auth_tab auth_tab-activo" data-tab="login">Iniciar Sesión</button>
+                <button class="auth_tab" data-tab="registro">Registrarse</button>
+            </div>
+
+            <!-- Formulario de Login -->
+            <form class="auth_form auth_form-activo" id="form-login">
+                <h2 class="auth_titulo">Bienvenido de nuevo</h2>
+                
+                <div class="form_grupo">
+                    <label for="login-email" class="form_label">Correo electrónico</label>
+                    <input 
+                        type="email" 
+                        id="login-email" 
+                        class="form_input" 
+                        placeholder="tu@email.com"
+                        required
+                    >
+                </div>
+
+                <div class="form_grupo">
+                    <label for="login-password" class="form_label">Contraseña</label>
+                    <div class="input_password">
+                        <input 
+                            type="password" 
+                            id="login-password" 
+                            class="form_input" 
+                            placeholder="••••••••"
+                            required
+                        >
+                        <button type="button" class="btn_ver_password" aria-label="Mostrar contraseña">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form_extras">
+                    <label class="checkbox_label">
+                        <input type="checkbox" id="recordar">
+                        <span>Recordarme</span>
+                    </label>
+                    <a href="#" class="link_recuperar">¿Olvidaste tu contraseña?</a>
+                </div>
+
+                <button type="submit" class="btn_submit">Iniciar Sesión</button>
+
+                <div class="auth_divider">
+                    <span>o continúa con</span>
+                </div>
+
+                <div class="auth_redes">
+                    <button type="button" class="btn_red">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                        </svg>
+                        Google
+                    </button>
+                    <button type="button" class="btn_red">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                        Facebook
+                    </button>
+                </div>
+            </form>
+
+            <!-- Formulario de Registro -->
+            <form class="auth_form" id="form-registro">
+                <h2 class="auth_titulo">Crear cuenta nueva</h2>
+                
+                <div class="form_grupo">
+                    <label for="registro-nombre" class="form_label">Nombre completo</label>
+                    <input 
+                        type="text" 
+                        id="registro-nombre" 
+                        class="form_input" 
+                        placeholder="Juan Pérez"
+                        required
+                    >
+                </div>
+
+                <div class="form_grupo">
+                    <label for="registro-email" class="form_label">Correo electrónico</label>
+                    <input 
+                        type="email" 
+                        id="registro-email" 
+                        class="form_input" 
+                        placeholder="tu@email.com"
+                        required
+                    >
+                </div>
+
+                <div class="form_grupo">
+                    <label for="registro-password" class="form_label">Contraseña</label>
+                    <div class="input_password">
+                        <input 
+                            type="password" 
+                            id="registro-password" 
+                            class="form_input" 
+                            placeholder="Mínimo 8 caracteres"
+                            required
+                            minlength="8"
+                        >
+                        <button type="button" class="btn_ver_password" aria-label="Mostrar contraseña">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <small class="form_ayuda">Debe tener al menos 8 caracteres</small>
+                </div>
+
+                <div class="form_grupo">
+                    <label for="registro-password-confirmar" class="form_label">Confirmar contraseña</label>
+                    <div class="input_password">
+                        <input 
+                            type="password" 
+                            id="registro-password-confirmar" 
+                            class="form_input" 
+                            placeholder="Repite tu contraseña"
+                            required
+                            minlength="8"
+                        >
+                        <button type="button" class="btn_ver_password" aria-label="Mostrar contraseña">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <label class="checkbox_label">
+                    <input type="checkbox" id="terminos" required>
+                    <span>Acepto los <a href="#">términos y condiciones</a></span>
+                </label>
+
+                <button type="submit" class="btn_submit">Crear Cuenta</button>
+
+                <div class="auth_divider">
+                    <span>o continúa con</span>
+                </div>
+
+                <div class="auth_redes">
+                    <button type="button" class="btn_red">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                        </svg>
+                        Google
+                    </button>
+                    <button type="button" class="btn_red">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                        Facebook
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 `;
+
+// ==================== FUNCIONALIDAD ====================
+
+// Menú hamburguesa
+const btnHamburguesa = document.querySelector('.btn_hamburguesa');
+const navMenu = document.querySelector('.navegacion_menu');
+
+btnHamburguesa.addEventListener('click', () => {
+    btnHamburguesa.classList.toggle('activo');
+    navMenu.classList.toggle('activo');
+    document.body.classList.toggle('menu-abierto');
+});
+
+// Cerrar menú al hacer click en un enlace (móvil)
+document.querySelectorAll('.navegacion_enlace').forEach(enlace => {
+    enlace.addEventListener('click', () => {
+        btnHamburguesa.classList.remove('activo');
+        navMenu.classList.remove('activo');
+        document.body.classList.remove('menu-abierto');
+    });
+});
+
+// Modal de autenticación
+const btnUsuario = document.querySelector('.btn_usuario');
+const modalAuth = document.getElementById('modal-auth');
+const btnCerrarModal = document.querySelector('.modal_cerrar');
+const overlay = modalAuth;
+
+// Abrir modal
+btnUsuario.addEventListener('click', () => {
+    modalAuth.classList.add('activo');
+    document.body.style.overflow = 'hidden';
+});
+
+// Cerrar modal
+btnCerrarModal.addEventListener('click', cerrarModal);
+overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) {
+        cerrarModal();
+    }
+});
+
+// Cerrar con tecla ESC
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modalAuth.classList.contains('activo')) {
+        cerrarModal();
+    }
+});
+
+function cerrarModal() {
+    modalAuth.classList.remove('activo');
+    document.body.style.overflow = '';
+}
+
+// Cambiar entre tabs (Login/Registro)
+const authTabs = document.querySelectorAll('.auth_tab');
+const authForms = document.querySelectorAll('.auth_form');
+
+authTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        const tabName = tab.dataset.tab;
+        
+        // Actualizar tabs activos
+        authTabs.forEach(t => t.classList.remove('auth_tab-activo'));
+        tab.classList.add('auth_tab-activo');
+        
+        // Mostrar formulario correspondiente
+        authForms.forEach(form => {
+            if (form.id === `form-${tabName}`) {
+                form.classList.add('auth_form-activo');
+            } else {
+                form.classList.remove('auth_form-activo');
+            }
+        });
+    });
+});
+
+// Mostrar/ocultar contraseña
+document.querySelectorAll('.btn_ver_password').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const input = this.parentElement.querySelector('input');
+        const type = input.type === 'password' ? 'text' : 'password';
+        input.type = type;
+        
+        // Cambiar icono
+        this.classList.toggle('activo');
+    });
+});
+
+// Manejo del formulario de login
+document.getElementById('form-login').addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-password').value;
+    const recordar = document.getElementById('recordar').checked;
+    
+    console.log('Login:', { email, password, recordar });
+    
+    // Aquí irían las llamadas a tu API
+    alert('Iniciando sesión...');
+    cerrarModal();
+});
+
+// Manejo del formulario de registro
+document.getElementById('form-registro').addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    const nombre = document.getElementById('registro-nombre').value;
+    const email = document.getElementById('registro-email').value;
+    const password = document.getElementById('registro-password').value;
+    const passwordConfirmar = document.getElementById('registro-password-confirmar').value;
+    const terminos = document.getElementById('terminos').checked;
+    
+    // Validar que las contraseñas coincidan
+    if (password !== passwordConfirmar) {
+        alert('Las contraseñas no coinciden');
+        return;
+    }
+    
+    if (!terminos) {
+        alert('Debes aceptar los términos y condiciones');
+        return;
+    }
+    
+    console.log('Registro:', { nombre, email, password, terminos });
+    
+    // Aquí irían las llamadas a tu API
+    alert('Registrando usuario...');
+    cerrarModal();
+});
+
+// Botones de redes sociales
+document.querySelectorAll('.btn_red').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const red = this.textContent.trim();
+        console.log(`Autenticación con ${red}`);
+        alert(`Autenticación con ${red} (por implementar)`);
+    });
+});
