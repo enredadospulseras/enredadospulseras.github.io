@@ -1,0 +1,632 @@
+/* ==================== NAVEGACIÓN BASE ==================== */
+.navegacion {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    gap: 2rem;
+}
+
+.logo-link {
+    flex-shrink: 0;
+}
+
+.header_logo {
+    height: 50px;
+    width: auto;
+    object-fit: contain;
+}
+
+.navegacion_menu {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1;
+    gap: 2rem;
+}
+
+.navegacion_enlaces {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.navegacion_enlace {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    font-size: 1.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.navegacion_enlace:hover {
+    background-color: #f5f5f5;
+}
+
+.navegacion_enlace-activo {
+    color: #fff;
+    background-color: #e8eaf6;
+}
+
+.navegacion_acciones {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Botones de acción */
+.btn_usuario,
+.btn_carrito {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    border: none;
+    border-radius: 8px;
+    background-color: #5c6ac4;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.btn_usuario:hover,
+.btn_carrito:hover {
+    background-color: #4a5ab3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(92, 106, 196, 0.3);
+}
+
+.btn_usuario:active,
+.btn_carrito:active {
+    transform: translateY(0);
+}
+
+.usuario_icono,
+.carrito_icono {
+    width: 20px;
+    height: 20px;
+}
+
+.btn_carrito {
+    position: relative;
+}
+
+.carrito_cantidad {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #ff4444;
+    color: white;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Botón hamburguesa (oculto en desktop) */
+.btn_hamburguesa {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    z-index: 101;
+}
+
+.btn_hamburguesa span {
+    width: 25px;
+    height: 3px;
+    background-color: #333;
+    transition: all 0.3s ease;
+    border-radius: 3px;
+}
+
+.btn_hamburguesa.activo span:nth-child(1) {
+    transform: rotate(45deg) translate(7px, 7px);
+}
+
+.btn_hamburguesa.activo span:nth-child(2) {
+    opacity: 0;
+}
+
+.btn_hamburguesa.activo span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -7px);
+}
+
+/* ==================== MODAL DE AUTENTICACIÓN ==================== */
+.modal_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    padding: 1rem;
+}
+
+.modal_overlay.activo {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal_contenido {
+    background: white;
+    border-radius: 16px;
+    padding: 2.5rem;
+    max-width: 450px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.modal_overlay.activo .modal_contenido {
+    transform: scale(1);
+}
+
+.modal_cerrar {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+
+.modal_cerrar:hover {
+    background-color: #f5f5f5;
+}
+
+.modal_cerrar svg {
+    width: 24px;
+    height: 24px;
+    stroke: #666;
+}
+
+/* Tabs de autenticación */
+.auth_tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.auth_tab {
+    flex: 1;
+    padding: 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #666;
+    position: relative;
+    transition: color 0.3s;
+}
+
+.auth_tab:hover {
+    color: #333;
+}
+
+.auth_tab-activo {
+    color: #5c6ac4;
+}
+
+.auth_tab-activo::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: #5c6ac4;
+}
+
+/* Formularios */
+.auth_form {
+    display: none;
+}
+
+.auth_form-activo {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.auth_titulo {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: #333;
+    font-weight: 600;
+}
+
+.form_grupo {
+    margin-bottom: 1.25rem;
+}
+
+.form_label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #333;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.form_input {
+    width: 100%;
+    padding: 0.875rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s;
+    font-family: inherit;
+}
+
+.form_input:focus {
+    outline: none;
+    border-color: #5c6ac4;
+    box-shadow: 0 0 0 3px rgba(92, 106, 196, 0.1);
+}
+
+.input_password {
+    position: relative;
+}
+
+.input_password .form_input {
+    padding-right: 3rem;
+}
+
+.btn_ver_password {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.btn_ver_password:hover {
+    background-color: #f5f5f5;
+}
+
+.btn_ver_password svg {
+    width: 20px;
+    height: 20px;
+    stroke: #666;
+}
+
+.btn_ver_password.activo svg {
+    stroke: #5c6ac4;
+}
+
+.form_ayuda {
+    display: block;
+    margin-top: 0.5rem;
+    color: #666;
+    font-size: 0.85rem;
+}
+
+.form_extras {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.checkbox_label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.checkbox_label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.checkbox_label a {
+    color: #5c6ac4;
+    text-decoration: none;
+}
+
+.checkbox_label a:hover {
+    text-decoration: underline;
+}
+
+.link_recuperar {
+    color: #5c6ac4;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.link_recuperar:hover {
+    text-decoration: underline;
+}
+
+.btn_submit {
+    width: 100%;
+    padding: 1rem;
+    background-color: #5c6ac4;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-bottom: 1.5rem;
+}
+
+.btn_submit:hover {
+    background-color: #4a5ab3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(92, 106, 196, 0.3);
+}
+
+.btn_submit:active {
+    transform: translateY(0);
+}
+
+/* Divider */
+.auth_divider {
+    position: relative;
+    text-align: center;
+    margin: 1.5rem 0;
+}
+
+.auth_divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: #e0e0e0;
+}
+
+.auth_divider span {
+    position: relative;
+    background: white;
+    padding: 0 1rem;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Botones de redes sociales */
+.auth_redes {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn_red {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #333;
+    transition: all 0.3s;
+}
+
+.btn_red:hover {
+    border-color: #5c6ac4;
+    background-color: #f5f5f5;
+}
+
+.btn_red svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* ==================== RESPONSIVE ==================== */
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .navegacion {
+        padding: 1rem 1.5rem;
+    }
+
+    .navegacion_enlaces {
+        gap: 1.5rem;
+    }
+
+    .navegacion_enlace {
+        font-size: 0.95rem;
+    }
+
+    .btn_texto {
+        display: none;
+    }
+}
+
+/* Móvil */
+@media (max-width: 768px) {
+    .navegacion {
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .header_logo {
+        height: 40px;
+    }
+
+    /* Mostrar botón hamburguesa */
+    .btn_hamburguesa {
+        display: flex;
+    }
+
+    /* Menú móvil */
+    .navegacion_menu {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 280px;
+        height: 100vh;
+        background: white;
+        flex-direction: column;
+        padding: 5rem 2rem 2rem;
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+        transition: right 0.3s ease;
+        z-index: 99;
+        overflow-y: auto;
+    }
+
+    .navegacion_menu.activo {
+        right: 0;
+    }
+
+    .navegacion_enlaces {
+        flex-direction: column;
+        width: 100%;
+        gap: 0.5rem;
+    }
+
+    .navegacion_enlace {
+        width: 100%;
+        text-align: left;
+        padding: 1rem;
+    }
+
+    .navegacion_acciones {
+        width: 100%;
+        flex-direction: column;
+        gap: 0.75rem;
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 1px solid #e0e0e0;
+    }
+
+    .btn_usuario,
+    .btn_carrito {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .btn_texto {
+        display: inline;
+    }
+
+    /* Overlay cuando el menú está abierto */
+    body.menu-abierto::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 98;
+    }
+
+    /* Modal responsive */
+    .modal_contenido {
+        padding: 2rem 1.5rem;
+        margin: 1rem;
+    }
+
+    .auth_titulo {
+        font-size: 1.25rem;
+    }
+
+    .auth_redes {
+        flex-direction: column;
+    }
+
+    .form_extras {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .navegacion {
+        padding: 0.75rem;
+    }
+
+    .header_logo {
+        height: 35px;
+    }
+
+    .modal_overlay {
+        padding: 0;
+    }
+
+    .modal_contenido {
+        border-radius: 0;
+        max-height: 100vh;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .navegacion_menu {
+        width: 100%;
+        right: -100%;
+    }
+}
+
+/* Prevenir scroll cuando el modal está abierto */
+body.menu-abierto {
+    overflow: hidden;
+}
