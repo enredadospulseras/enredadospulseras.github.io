@@ -370,6 +370,7 @@
     cursor: pointer;
     font-size: 0.9rem;
     color: #666;
+    margin-bottom: 1rem;
 }
 
 .checkbox_label input[type="checkbox"] {
@@ -610,10 +611,8 @@
     }
 
     .modal_contenido {
-        border-radius: 0;
         max-height: 100vh;
-        height: 100vh;
-        margin: 0;
+        margin: 1rem;
     }
 
     .navegacion_menu {
