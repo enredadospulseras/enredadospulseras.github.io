@@ -250,10 +250,31 @@ const modalAuth = document.getElementById('modal-auth');
 const btnCerrarModal = document.querySelector('.modal_cerrar');
 const overlay = modalAuth;
 
-// Abrir modal
-btnUsuario.addEventListener('click', () => {
-    modalAuth.classList.add('activo');
-    document.body.style.overflow = 'hidden';
+// Abrir modal (solo si no hay sesión iniciada)
+btnUsuario.addEventListener('click', async (e) => {
+    e.stopPropagation();
+    
+    try {
+        const { obtenerUsuarioActual } = await import('/includes/firebase.js');
+        const user = obtenerUsuarioActual();
+        
+        if (!user) {
+            // Si NO hay usuario, abrir modal de login
+            modalAuth.classList.add('activo');
+            document.body.style.overflow = 'hidden';
+        } else {
+            // Si hay usuario, toggle del menú desplegable
+            const menuUsuario = document.getElementById('menu-usuario');
+            if (menuUsuario) {
+                menuUsuario.classList.toggle('activo');
+            }
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        // Si hay error, abrir modal por defecto
+        modalAuth.classList.add('activo');
+        document.body.style.overflow = 'hidden';
+    }
 });
 
 // Cerrar modal
@@ -312,22 +333,48 @@ document.querySelectorAll('.btn_ver_password').forEach(btn => {
 });
 
 // Manejo del formulario de login
-document.getElementById('form-login').addEventListener('submit', (e) => {
+document.getElementById('form-login').addEventListener('submit', async (e) => {
     e.preventDefault();
     
     const email = document.getElementById('login-email').value;
     const password = document.getElementById('login-password').value;
     const recordar = document.getElementById('recordar').checked;
     
-    console.log('Login:', { email, password, recordar });
+    // Deshabilitar el botón de envío
+    const btnSubmit = e.target.querySelector('.btn_submit');
+    const textoOriginal = btnSubmit.textContent;
+    btnSubmit.disabled = true;
+    btnSubmit.textContent = 'Iniciando sesión...';
     
-    // Aquí irían las llamadas a tu API
-    alert('Iniciando sesión...');
-    cerrarModal();
+    try {
+        // Importar la función de Firebase
+        const { iniciarSesion } = await import('/includes/firebase.js');
+        
+        // Intentar iniciar sesión
+        const resultado = await iniciarSesion(email, password, recordar);
+        
+        if (resultado.success) {
+            // Mostrar mensaje de éxito
+            mostrarNotificacion('¡Bienvenido! Sesión iniciada correctamente', 'exito');
+            cerrarModal();
+            // Limpiar formulario
+            e.target.reset();
+        } else {
+            // Mostrar error
+            mostrarNotificacion(resultado.error, 'error');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        mostrarNotificacion('Error al iniciar sesión. Intenta nuevamente', 'error');
+    } finally {
+        // Rehabilitar el botón
+        btnSubmit.disabled = false;
+        btnSubmit.textContent = textoOriginal;
+    }
 });
 
 // Manejo del formulario de registro
-document.getElementById('form-registro').addEventListener('submit', (e) => {
+document.getElementById('form-registro').addEventListener('submit', async (e) => {
     e.preventDefault();
     
     const nombre = document.getElementById('registro-nombre').value;
@@ -338,27 +385,340 @@ document.getElementById('form-registro').addEventListener('submit', (e) => {
     
     // Validar que las contraseñas coincidan
     if (password !== passwordConfirmar) {
-        alert('Las contraseñas no coinciden');
+        mostrarNotificacion('Las contraseñas no coinciden', 'error');
         return;
     }
     
     if (!terminos) {
-        alert('Debes aceptar los términos y condiciones');
+        mostrarNotificacion('Debes aceptar los términos y condiciones', 'error');
         return;
     }
     
-    console.log('Registro:', { nombre, email, password, terminos });
+    // Deshabilitar el botón de envío
+    const btnSubmit = e.target.querySelector('.btn_submit');
+    const textoOriginal = btnSubmit.textContent;
+    btnSubmit.disabled = true;
+    btnSubmit.textContent = 'Creando cuenta...';
     
-    // Aquí irían las llamadas a tu API
-    alert('Registrando usuario...');
-    cerrarModal();
+    try {
+        // Importar la función de Firebase
+        const { registrarUsuario } = await import('/includes/firebase.js');
+        
+        // Intentar registrar usuario
+        const resultado = await registrarUsuario(email, password, nombre);
+        
+        if (resultado.success) {
+            // Mostrar mensaje de éxito
+            mostrarNotificacion('¡Cuenta creada exitosamente! Bienvenido', 'exito');
+            cerrarModal();
+            // Limpiar formulario
+            e.target.reset();
+        } else {
+            // Mostrar error
+            mostrarNotificacion(resultado.error, 'error');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        mostrarNotificacion('Error al crear la cuenta. Intenta nuevamente', 'error');
+    } finally {
+        // Rehabilitar el botón
+        btnSubmit.disabled = false;
+        btnSubmit.textContent = textoOriginal;
+    }
 });
 
 // Botones de redes sociales
 document.querySelectorAll('.btn_red').forEach(btn => {
-    btn.addEventListener('click', function() {
+    btn.addEventListener('click', async function() {
         const red = this.textContent.trim();
-        console.log(`Autenticación con ${red}`);
-        alert(`Autenticación con ${red} (por implementar)`);
+        
+        // Deshabilitar botón durante la autenticación
+        btn.disabled = true;
+        const textoOriginal = btn.innerHTML;
+        btn.innerHTML = `<span style="opacity: 0.6;">Conectando...</span>`;
+        
+        try {
+            let resultado;
+            
+            if (red === 'Google') {
+                const { iniciarSesionConGoogle } = await import('/includes/firebase.js');
+                resultado = await iniciarSesionConGoogle();
+            } else if (red === 'Facebook') {
+                const { iniciarSesionConFacebook } = await import('/includes/firebase.js');
+                resultado = await iniciarSesionConFacebook();
+            }
+            
+            if (resultado && resultado.success) {
+                mostrarNotificacion(`¡Bienvenido! Conectado con ${red}`, 'exito');
+                cerrarModal();
+            } else if (resultado) {
+                mostrarNotificacion(resultado.error, 'error');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            mostrarNotificacion(`Error al conectar con ${red}`, 'error');
+        } finally {
+            // Rehabilitar botón
+            btn.disabled = false;
+            btn.innerHTML = textoOriginal;
+        }
     });
 });
+
+// ==================== SISTEMA DE NOTIFICACIONES ====================
+
+function mostrarNotificacion(mensaje, tipo = 'info') {
+    // Crear elemento de notificación
+    const notificacion = document.createElement('div');
+    notificacion.className = `notificacion notificacion-${tipo}`;
+    notificacion.innerHTML = `
+        <div class="notificacion_contenido">
+            <span class="notificacion_icono">
+                ${tipo === 'exito' ? '✓' : tipo === 'error' ? '✕' : 'ℹ'}
+            </span>
+            <span class="notificacion_mensaje">${mensaje}</span>
+        </div>
+    `;
+    
+    // Añadir estilos si no existen
+    if (!document.getElementById('notificacion-styles')) {
+        const styles = document.createElement('style');
+        styles.id = 'notificacion-styles';
+        styles.textContent = `
+            .notificacion {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 16px 24px;
+                border-radius: 8px;
+                background: white;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                z-index: 10000;
+                animation: slideIn 0.3s ease-out;
+                max-width: 400px;
+            }
+            
+            .notificacion_contenido {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+            
+            .notificacion_icono {
+                font-size: 20px;
+                font-weight: bold;
+            }
+            
+            .notificacion-exito {
+                border-left: 4px solid #10b981;
+            }
+            
+            .notificacion-exito .notificacion_icono {
+                color: #10b981;
+            }
+            
+            .notificacion-error {
+                border-left: 4px solid #ef4444;
+            }
+            
+            .notificacion-error .notificacion_icono {
+                color: #ef4444;
+            }
+            
+            .notificacion-info {
+                border-left: 4px solid #3b82f6;
+            }
+            
+            .notificacion-info .notificacion_icono {
+                color: #3b82f6;
+            }
+            
+            @keyframes slideIn {
+                from {
+                    transform: translateX(400px);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            
+            @keyframes slideOut {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(400px);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(styles);
+    }
+    
+    // Añadir al DOM
+    document.body.appendChild(notificacion);
+    
+    // Remover después de 4 segundos
+    setTimeout(() => {
+        notificacion.style.animation = 'slideOut 0.3s ease-out';
+        setTimeout(() => {
+            notificacion.remove();
+        }, 300);
+    }, 4000);
+}
+
+// ==================== OBSERVADOR DE ESTADO DE AUTENTICACIÓN ====================
+
+// Importar y configurar el observador al cargar la página
+(async function() {
+    try {
+        const { observarEstadoAutenticacion } = await import('/includes/firebase.js');
+        
+        observarEstadoAutenticacion((user) => {
+            const btnUsuario = document.querySelector('.btn_usuario');
+            const btnTexto = btnUsuario.querySelector('.btn_texto');
+            
+            if (user) {
+                // Usuario autenticado
+                console.log('Usuario autenticado:', user);
+                
+                // Cambiar texto del botón
+                if (btnTexto) {
+                    btnTexto.textContent = user.displayName || user.email.split('@')[0];
+                }
+                
+                // Añadir menú desplegable de usuario (opcional)
+                actualizarMenuUsuario(user);
+            } else {
+                // Usuario no autenticado
+                console.log('Usuario no autenticado');
+                
+                if (btnTexto) {
+                    btnTexto.textContent = 'Cuenta';
+                }
+            }
+        });
+    } catch (error) {
+        console.error('Error al configurar observador de autenticación:', error);
+    }
+})();
+
+// Función para actualizar el menú de usuario
+function actualizarMenuUsuario(user) {
+    const btnUsuario = document.querySelector('.btn_usuario');
+    
+    // Crear menú desplegable si no existe
+    let menuUsuario = document.getElementById('menu-usuario');
+    if (!menuUsuario) {
+        menuUsuario = document.createElement('div');
+        menuUsuario.id = 'menu-usuario';
+        menuUsuario.className = 'menu_usuario';
+        menuUsuario.innerHTML = `
+            <div class="menu_usuario_info">
+                <strong>${user.displayName || 'Usuario'}</strong>
+                <small>${user.email}</small>
+            </div>
+            <hr>
+            <a href="#" class="menu_usuario_item">Mi cuenta</a>
+            <a href="#" class="menu_usuario_item">Mis pedidos</a>
+            <a href="#" class="menu_usuario_item" id="btn-cerrar-sesion">Cerrar sesión</a>
+        `;
+        
+        // Añadir estilos del menú
+        if (!document.getElementById('menu-usuario-styles')) {
+            const styles = document.createElement('style');
+            styles.id = 'menu-usuario-styles';
+            styles.textContent = `
+                .menu_usuario {
+                    position: absolute;
+                    top: 100%;
+                    right: 0;
+                    margin-top: 8px;
+                    background: white;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                    padding: 12px;
+                    min-width: 200px;
+                    display: none;
+                    z-index: 1000;
+                }
+                
+                .menu_usuario.activo {
+                    display: block;
+                }
+                
+                .menu_usuario_info {
+                    padding: 8px;
+                    margin-bottom: 8px;
+                }
+                
+                .menu_usuario_info strong {
+                    display: block;
+                    margin-bottom: 4px;
+                }
+                
+                .menu_usuario_info small {
+                    color: #666;
+                    font-size: 0.85rem;
+                }
+                
+                .menu_usuario hr {
+                    border: none;
+                    border-top: 1px solid #e5e7eb;
+                    margin: 8px 0;
+                }
+                
+                .menu_usuario_item {
+                    display: block;
+                    padding: 10px 12px;
+                    color: #374151;
+                    text-decoration: none;
+                    border-radius: 4px;
+                    transition: background 0.2s;
+                }
+                
+                .menu_usuario_item:hover {
+                    background: #f3f4f6;
+                }
+                
+                .navegacion_acciones {
+                    position: relative;
+                }
+            `;
+            document.head.appendChild(styles);
+        }
+        
+        btnUsuario.parentElement.appendChild(menuUsuario);
+        
+        // Marcar que el menú está inicializado
+        btnUsuario.dataset.menuInicializado = 'true';
+        
+        // Cerrar menú al hacer click fuera
+        document.addEventListener('click', (e) => {
+            if (!menuUsuario.contains(e.target) && !btnUsuario.contains(e.target)) {
+                menuUsuario.classList.remove('activo');
+            }
+        });
+        
+        // Cerrar sesión
+        document.getElementById('btn-cerrar-sesion').addEventListener('click', async (e) => {
+            e.preventDefault();
+            
+            try {
+                const { cerrarSesion } = await import('/includes/firebase.js');
+                const resultado = await cerrarSesion();
+                
+                if (resultado.success) {
+                    mostrarNotificacion('Sesión cerrada correctamente', 'exito');
+                    menuUsuario.remove();
+                }
+            } catch (error) {
+                console.error('Error al cerrar sesión:', error);
+                mostrarNotificacion('Error al cerrar sesión', 'error');
+            }
+        });
+    }
+}
