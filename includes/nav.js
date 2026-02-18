@@ -1,7 +1,7 @@
 // ==================== NAVEGACIÓN ====================
 document.getElementById("nav-placeholder").innerHTML = `
     <nav class="navegacion">
-        <a href="index.html" class="logo-link">
+        <a href="/index.html" class="logo-link">
             <img class="header_logo" src="/static/img/logos/logo_completo.png" alt="Logotipo Enredados">
         </a>
 
