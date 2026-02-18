@@ -187,7 +187,7 @@ document.getElementById("nav-placeholder").innerHTML = `
 
                 <label class="checkbox_label">
                     <input type="checkbox" id="terminos" required>
-                    <span>Acepto los <a href="#">términos y condiciones</a></span>
+                    <span>Acepto los <a href="/pages/terminos.html">términos y condiciones</a></span>
                 </label>
 
                 <button type="submit" class="btn_submit">Crear Cuenta</button>
