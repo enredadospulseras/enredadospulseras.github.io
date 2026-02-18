@@ -10,6 +10,7 @@ document.getElementById("footer-placeholder").innerHTML = `
                 <a href="index.html">Tienda</a>
                 <a href="/pages/nosotros.html">Nosotros</a>
                 <a href="#contacto">Contacto</a>
+                <a href="/pages/terminos.html">Términos y condiciones</a>
             </div>
             <div class="footer_columna">
                 <h4 class="footer_titulo">Síguenos</h4>
