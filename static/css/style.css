@@ -600,3 +600,40 @@ body::after {
         padding: 0.8rem 1.5rem;
     }
 }
+/* ==================== CARRITO - BOTONES PRODUCTO ==================== */
+.producto {
+    display: flex;
+    flex-direction: column;
+}
+.producto a {
+    flex: 1;
+}
+.btn_agregar {
+    display: block;
+    width: calc(100% - 2rem);
+    margin: 0.5rem 1rem 1rem;
+    padding: 0.9rem 1rem;
+    background: transparent;
+    border: 2px solid var(--secundario);
+    color: var(--secundario);
+    border-radius: 8px;
+    font-size: 1.3rem;
+    font-family: var(--fuenteTexto);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    letter-spacing: 0.3px;
+}
+.btn_agregar:hover {
+    background: var(--secundario);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255,105,180,0.3);
+}
+.btn_agregar:active { transform: translateY(0); }
+
+/* Animación slideIn para notificaciones */
+@keyframes slideIn {
+    from { transform: translateX(400px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finalizar Compra | Enredados</title>
+    <link rel="icon" href="/favicon.png">
+    <link rel="stylesheet" href="/static/css/normalize.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Krub:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&family=Staatliches&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/nav.css">
+    <link rel="stylesheet" href="/static/css/checkout.css">
+    <script src="/includes/main.js" type="module"></script>
+</head>
+<body>
+    <div id="nav-placeholder"></div>
+
+    <main class="contenedor checkout_main">
+        <div class="checkout_breadcrumb">
+            <a href="/index.html">Tienda</a> / <span>Finalizar Compra</span>
+        </div>
+        <h1 class="checkout_titulo">Finalizar Compra</h1>
+
+        <div class="checkout_grid">
+            <!-- Columna izquierda: formularios -->
+            <div class="checkout_formularios">
+
+                <!-- Paso 1: Dirección -->
+                <section class="checkout_seccion">
+                    <div class="seccion_header">
+                        <div class="seccion_numero">1</div>
+                        <h2>Dirección de entrega</h2>
+                    </div>
+                    <div id="checkout-direccion-container">
+                        <div class="form_grupo">
+                            <label class="form_label">Nombre completo *</label>
+                            <input type="text" id="checkout-nombre" class="form_input" placeholder="María García López" required>
+                        </div>
+                        <div class="form_row">
+                            <div class="form_grupo">
+                                <label class="form_label">Teléfono *</label>
+                                <input type="tel" id="checkout-telefono" class="form_input" placeholder="+34 600 000 000">
+                            </div>
+                            <div class="form_grupo">
+                                <label class="form_label">DNI / NIF</label>
+                                <input type="text" id="checkout-dni" class="form_input" placeholder="12345678A">
+                            </div>
+                        </div>
+                        <div class="form_grupo">
+                            <label class="form_label">Dirección *</label>
+                            <input type="text" id="checkout-calle" class="form_input" placeholder="Calle Mayor, 10, 2ºA" required>
+                        </div>
+                        <div class="form_row">
+                            <div class="form_grupo">
+                                <label class="form_label">Código Postal *</label>
+                                <input type="text" id="checkout-cp" class="form_input" placeholder="28001" required>
+                            </div>
+                            <div class="form_grupo">
+                                <label class="form_label">Ciudad *</label>
+                                <input type="text" id="checkout-ciudad" class="form_input" placeholder="Madrid" required>
+                            </div>
+                        </div>
+                        <div class="form_grupo">
+                            <label class="form_label">Provincia *</label>
+                            <input type="text" id="checkout-provincia" class="form_input" placeholder="Madrid" required>
+                        </div>
+                        <div class="form_grupo">
+                            <label class="form_label">País</label>
+                            <select id="checkout-pais" class="form_input">
+                                <option value="ES" selected>España</option>
+                                <option value="PT">Portugal</option>
+                                <option value="FR">Francia</option>
+                                <option value="DE">Alemania</option>
+                                <option value="IT">Italia</option>
+                            </select>
+                        </div>
+                        <div class="form_grupo">
+                            <label class="form_label">Nota para el pedido</label>
+                            <textarea id="checkout-nota" class="form_input" rows="2" placeholder="Instrucciones especiales, color preferido, etc."></textarea>
+                        </div>
+                        <label class="checkbox_label" id="guardar-direccion-wrap">
+                            <input type="checkbox" id="guardar-dir" checked>
+                            <span>Guardar esta dirección en mi cuenta</span>
+                        </label>
+                    </div>
+                </section>
+
+                <!-- Paso 2: Método de pago -->
+                <section class="checkout_seccion">
+                    <div class="seccion_header">
+                        <div class="seccion_numero">2</div>
+                        <h2>Método de pago</h2>
+                    </div>
+                    <div class="pago_opciones">
+                        <label class="pago_opcion pago_opcion-activo">
+                            <input type="radio" name="pago" value="transferencia" checked>
+                            <div class="pago_opcion_contenido">
+                                <span class="pago_icono">🏦</span>
+                                <div>
+                                    <strong>Transferencia bancaria</strong>
+                                    <p>Recibirás los datos por correo</p>
+                                </div>
+                            </div>
+                        </label>
+                        <label class="pago_opcion">
+                            <input type="radio" name="pago" value="bizum">
+                            <div class="pago_opcion_contenido">
+                                <span class="pago_icono">📱</span>
+                                <div>
+                                    <strong>Bizum</strong>
+                                    <p>Pago rápido por móvil</p>
+                                </div>
+                            </div>
+                        </label>
+                        <label class="pago_opcion">
+                            <input type="radio" name="pago" value="paypal">
+                            <div class="pago_opcion_contenido">
+                                <span class="pago_icono">💳</span>
+                                <div>
+                                    <strong>PayPal</strong>
+                                    <p>Pago seguro online</p>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                    <div id="info-transferencia" class="pago_info_box">
+                        <p>💡 Tras confirmar el pedido, recibirás un correo con los datos bancarios para realizar la transferencia. Tu pedido se procesará al recibir el pago.</p>
+                    </div>
+                    <div id="info-bizum" class="pago_info_box" style="display:none;">
+                        <p>📱 Tras confirmar el pedido, recibirás el número de Bizum por correo para completar el pago.</p>
+                    </div>
+                    <div id="info-paypal" class="pago_info_box" style="display:none;">
+                        <p>💳 Serás redirigido a PayPal para completar el pago de forma segura.</p>
+                    </div>
+                </section>
+
+                <!-- Aceptar términos -->
+                <div class="form_grupo" style="margin: 2rem 0;">
+                    <label class="checkbox_label">
+                        <input type="checkbox" id="aceptar-terminos" required>
+                        <span>He leído y acepto los <a href="/pages/terminos.html" target="_blank">términos y condiciones</a> y la política de privacidad *</span>
+                    </label>
+                </div>
+
+                <button class="btn_confirmar_pedido" id="btn-confirmar-pedido">
+                    Confirmar pedido
+                </button>
+            </div>
+
+            <!-- Columna derecha: resumen -->
+            <aside class="checkout_resumen">
+                <div class="resumen_sticky">
+                    <h3 class="resumen_titulo">Resumen del pedido</h3>
+                    <div id="resumen-items" class="resumen_items"></div>
+                    <div class="resumen_lineas">
+                        <div class="resumen_linea">
+                            <span>Subtotal</span>
+                            <span id="resumen-subtotal">0,00 €</span>
+                        </div>
+                        <div class="resumen_linea">
+                            <span>Envío</span>
+                            <span id="resumen-envio">—</span>
+                        </div>
+                        <div class="resumen_linea resumen_total">
+                            <span>Total</span>
+                            <span id="resumen-total">0,00 €</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script src="/includes/nav.js"></script>
+    <script src="/includes/footer.js"></script>
+    <script type="module" src="/static/js/checkout.js"></script>
+</body>
+</html>

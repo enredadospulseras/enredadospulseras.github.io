@@ -247,3 +247,55 @@ document.addEventListener('DOMContentLoaded', () => {
     new CarritoManager();
     new FavoritoManager();
 });
+// ==================== INTEGRACIÓN CON CARRITO REAL ====================
+// Reemplaza la clase CarritoManager básica con integración real
+(async function() {
+    // Esperar a que el DOM esté listo
+    await new Promise(r => {
+        if (document.readyState === 'complete' || document.readyState === 'interactive') r();
+        else document.addEventListener('DOMContentLoaded', r);
+    });
+
+    const btnAgregar = document.querySelector('.btn_agregar_carrito');
+    if (!btnAgregar) return;
+
+    btnAgregar.addEventListener('click', async () => {
+        const { agregarItem } = await import('/includes/carrito.js');
+        const { abrirCarrito } = await import('/includes/carritoDrawer.js');
+
+        // Recopilar datos del producto
+        const nombre = document.querySelector('.producto_titulo')?.textContent?.trim() || 'Pulsera';
+        const precioText = document.querySelector('.producto_precio_detalle')?.textContent?.replace(/[^0-9,.]/g,'').replace(',','.') || '1';
+        const precio = parseFloat(precioText) || 1;
+        const cantidad = parseInt(document.getElementById('cantidad')?.value) || 1;
+        const colorEl = document.querySelector('.color_opcion.active, .color_opcion:first-child');
+        const color = colorEl?.dataset.color || null;
+        const imagen = document.querySelector('.carrusel_slide.active img, .carrusel_slide img')?.src || '/static/img/productos/1.jpeg';
+
+        // ID único por producto + color
+        const id = nombre.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+
+        const item = {
+            id,
+            nombre,
+            precio,
+            imagen,
+            cantidad,
+            opciones: color ? { color } : {}
+        };
+
+        await agregarItem(item);
+
+        // Feedback visual en botón
+        const originalText = btnAgregar.innerHTML;
+        btnAgregar.innerHTML = '✓ ¡Añadido al carrito!';
+        btnAgregar.style.background = '#10b981';
+        setTimeout(() => {
+            btnAgregar.innerHTML = originalText;
+            btnAgregar.style.background = '';
+        }, 2000);
+
+        // Abrir carrito
+        setTimeout(() => abrirCarrito(), 400);
+    });
+})();
