@@ -189,7 +189,7 @@ document.getElementById("nav-placeholder").innerHTML = `
             </div>
             <div id="mfa-setup-error" class="mfa_error" style="display:none;"></div>
             <button type="button" class="btn_submit" id="btn-activar-mfa">Activar verificación en dos pasos</button>
-            <p class="mfa_nota">🔒 Tu cuenta quedará protegida con esta configuración</p>
+            <p class="mfa_nota">Tu cuenta quedará protegida con esta configuración</p>
         </div>
     </div>
 
@@ -495,7 +495,7 @@ document.getElementById('btn-activar-mfa').addEventListener('click', async () =>
             _totpSecretSetup = null;
             window._mfaEnProceso = false;
             cerrarModal('modal-mfa-setup');
-            mostrarNotificacion('🔐 ¡Verificación en dos pasos activada! Tu cuenta está protegida.', 'exito');
+            mostrarNotificacion('¡Verificación en dos pasos activada! Tu cuenta está protegida.', 'exito');
             actualizarMenuUsuario(user);
         } else {
             errorDiv.textContent = resultado.error;
@@ -823,7 +823,6 @@ function actualizarMenuUsuario(user) {
             <div class="menu_usuario_info">
                 <strong>${user.displayName || 'Usuario'}</strong>
                 <small>${user.email}</small>
-                <small class="mfa_badge">🔐 2FA Activo</small>
             </div>
             <hr>
             <a href="#" class="menu_usuario_item">Mi cuenta</a>
