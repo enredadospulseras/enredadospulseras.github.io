@@ -1,0 +1,450 @@
+/* ==================== CHECKOUT ==================== */
+.checkout_main {
+    padding: 3rem 2rem;
+    max-width: 1100px;
+}
+
+.checkout_breadcrumb {
+    font-size: 1.3rem;
+    color: #888;
+    margin-bottom: 1rem;
+}
+.checkout_breadcrumb a { color: #ff69b4; text-decoration: none; }
+.checkout_breadcrumb a:hover { text-decoration: underline; }
+
+.checkout_titulo {
+    font-family: 'Staatliches', cursive;
+    font-size: 3.5rem;
+    color: #2c3e50;
+    margin-bottom: 3rem;
+}
+
+.checkout_grid {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 3rem;
+    align-items: start;
+}
+
+/* Sección */
+.checkout_seccion {
+    background: #fff;
+    border-radius: 16px;
+    padding: 2.5rem;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+    border: 1px solid #f0f0f0;
+    margin-bottom: 2rem;
+}
+
+.seccion_header {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    margin-bottom: 2rem;
+}
+.seccion_numero {
+    width: 3.5rem;
+    height: 3.5rem;
+    background: linear-gradient(135deg, #ff69b4, #ff1493);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Staatliches', cursive;
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+.seccion_header h2 {
+    font-family: 'Staatliches', cursive;
+    font-size: 2.2rem;
+    color: #2c3e50;
+}
+
+.form_row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+/* Pago opciones */
+.pago_opciones { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem; }
+.pago_opcion {
+    display: flex;
+    align-items: center;
+    padding: 1.4rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.pago_opcion input[type="radio"] { display: none; }
+.pago_opcion-activo, .pago_opcion:has(input:checked) {
+    border-color: #ff69b4;
+    background: #fff5f8;
+}
+.pago_opcion_contenido {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    width: 100%;
+}
+.pago_icono { font-size: 2.4rem; }
+.pago_opcion_contenido strong { font-size: 1.4rem; display: block; }
+.pago_opcion_contenido p { font-size: 1.2rem; color: #888; margin: 0; }
+
+.pago_info_box {
+    background: #fff5f8;
+    border-left: 4px solid #ff69b4;
+    border-radius: 0 8px 8px 0;
+    padding: 1.2rem 1.5rem;
+    font-size: 1.3rem;
+    color: #555;
+    margin-top: 1rem;
+    line-height: 1.6;
+}
+
+.btn_confirmar_pedido {
+    width: 100%;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #ff69b4, #ff1493);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 2rem;
+    font-family: 'Staatliches', cursive;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: all 0.2s;
+    box-shadow: 0 6px 20px rgba(255,105,180,0.35);
+}
+.btn_confirmar_pedido:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255,105,180,0.45);
+}
+.btn_confirmar_pedido:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+/* Resumen */
+.resumen_sticky { position: sticky; top: 8rem; }
+.checkout_resumen {
+    background: #fff;
+    border-radius: 16px;
+    padding: 2.5rem;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+    border: 1px solid #f0f0f0;
+}
+.resumen_titulo {
+    font-family: 'Staatliches', cursive;
+    font-size: 2.2rem;
+    color: #2c3e50;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #ffe4f1;
+}
+.resumen_items { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem; }
+.resumen_item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.resumen_item img {
+    width: 55px;
+    height: 55px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid #ffe4f1;
+}
+.resumen_item_info { flex: 1; min-width: 0; }
+.resumen_item_nombre {
+    font-size: 1.3rem;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.resumen_item_qty { font-size: 1.2rem; color: #888; }
+.resumen_item_precio { font-size: 1.4rem; font-weight: 700; color: #ff69b4; white-space: nowrap; }
+
+.resumen_lineas { border-top: 1px solid #eee; padding-top: 1.5rem; }
+.resumen_linea {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.4rem;
+    color: #555;
+    margin-bottom: 0.8rem;
+}
+.resumen_total {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #2c3e50;
+    border-top: 2px solid #eee;
+    padding-top: 1rem;
+    margin-top: 0.5rem;
+}
+.resumen_total span:last-child { color: #ff69b4; }
+
+.resumen_seguridad {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #eee;
+    font-size: 1.2rem;
+    color: #888;
+}
+
+/* ==================== CUENTA USUARIO ==================== */
+.cuenta_main { padding: 3rem 2rem; max-width: 900px; }
+.cuenta_header {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 4rem;
+    background: #fff;
+    border-radius: 16px;
+    padding: 2.5rem;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+}
+.cuenta_avatar {
+    width: 8rem;
+    height: 8rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff69b4, #ffb6d9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    color: white;
+    font-family: 'Staatliches', cursive;
+    flex-shrink: 0;
+}
+.cuenta_info_header h1 {
+    font-family: 'Staatliches', cursive;
+    font-size: 2.8rem;
+    color: #2c3e50;
+}
+.cuenta_info_header p { font-size: 1.4rem; color: #888; }
+.cuenta_badge_mfa {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #d1fae5;
+    color: #065f46;
+    padding: 0.3rem 1rem;
+    border-radius: 50px;
+    font-size: 1.2rem;
+    margin-top: 0.5rem;
+    font-weight: 600;
+}
+
+.cuenta_nav_tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2.5rem;
+    border-bottom: 2px solid #ffe4f1;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+.cuenta_tab {
+    padding: 1rem 2rem;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    cursor: pointer;
+    font-size: 1.4rem;
+    font-family: 'Krub', sans-serif;
+    font-weight: 600;
+    color: #888;
+    white-space: nowrap;
+    transition: all 0.2s;
+}
+.cuenta_tab:hover { color: #ff69b4; }
+.cuenta_tab.activo { color: #ff69b4; border-bottom-color: #ff69b4; }
+
+.cuenta_panel { display: none; }
+.cuenta_panel.activo { display: block; animation: fadeInModal 0.2s ease; }
+
+.cuenta_seccion {
+    background: #fff;
+    border-radius: 16px;
+    padding: 2.5rem;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+    border: 1px solid #f0f0f0;
+    margin-bottom: 2rem;
+}
+.cuenta_seccion h3 {
+    font-family: 'Staatliches', cursive;
+    font-size: 2rem;
+    color: #2c3e50;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #ffe4f1;
+}
+
+.btn_guardar {
+    background: #ff69b4;
+    color: white;
+    border: none;
+    padding: 1rem 2.5rem;
+    border-radius: 8px;
+    font-size: 1.4rem;
+    font-family: 'Staatliches', cursive;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.btn_guardar:hover { background: #e05ca0; transform: translateY(-1px); }
+.btn_guardar:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+/* Pedidos */
+.pedido_card {
+    border: 1px solid #f0f0f0;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+}
+.pedido_header_card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 1.5rem;
+    background: #fafafa;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+}
+.pedido_id { font-size: 1.3rem; font-weight: 700; color: #2c3e50; }
+.pedido_fecha { font-size: 1.2rem; color: #888; }
+.pedido_estado {
+    padding: 0.3rem 1.2rem;
+    border-radius: 50px;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+.estado-pendiente { background: #fef3c7; color: #92400e; }
+.estado-confirmado { background: #d1fae5; color: #065f46; }
+.estado-enviado { background: #dbeafe; color: #1e40af; }
+.estado-entregado { background: #e0e7ff; color: #4338ca; }
+
+.pedido_body_card { padding: 1.5rem; }
+.pedido_items_mini { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.pedido_item_mini {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: #f5f5f5;
+    padding: 0.5rem 0.8rem;
+    border-radius: 8px;
+    font-size: 1.2rem;
+}
+.pedido_total_card { font-size: 1.5rem; font-weight: 700; color: #ff69b4; text-align: right; }
+
+.no_pedidos {
+    text-align: center;
+    padding: 4rem;
+    color: #aaa;
+}
+.no_pedidos p { font-size: 1.5rem; margin-bottom: 1.5rem; }
+.no_pedidos a {
+    background: #ff69b4;
+    color: white;
+    padding: 1rem 2.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 1.4rem;
+}
+
+/* Dirección guardada */
+.dir_guardada {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+}
+.dir_contenido { font-size: 1.4rem; line-height: 1.8; color: #555; }
+.btn_editar_dir {
+    background: none;
+    border: 1.5px solid #ff69b4;
+    color: #ff69b4;
+    padding: 0.6rem 1.4rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.3rem;
+    white-space: nowrap;
+    transition: all 0.2s;
+}
+.btn_editar_dir:hover { background: #ff69b4; color: white; }
+
+/* Loading estado */
+.loading_state {
+    text-align: center;
+    padding: 3rem;
+    color: #aaa;
+    font-size: 1.4rem;
+}
+.spinner {
+    width: 3rem;
+    height: 3rem;
+    border: 3px solid #ffe4f1;
+    border-top-color: #ff69b4;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 1rem;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Confirmación pedido */
+.confirmacion_container {
+    text-align: center;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 6rem 2rem;
+}
+.confirmacion_icono { font-size: 6rem; margin-bottom: 2rem; }
+.confirmacion_container h1 {
+    font-family: 'Staatliches', cursive;
+    font-size: 3.5rem;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+}
+.confirmacion_container p { font-size: 1.5rem; color: #666; margin-bottom: 2.5rem; line-height: 1.7; }
+.confirmacion_numero {
+    background: #fff5f8;
+    border: 2px dashed #ffb6d9;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 3rem;
+}
+.confirmacion_numero p { font-size: 1.3rem; color: #888; margin-bottom: 0.5rem; }
+.confirmacion_numero strong { font-size: 2.2rem; color: #ff69b4; font-family: 'Staatliches', cursive; }
+.confirmacion_acciones { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.btn_ir_tienda, .btn_ver_pedidos {
+    padding: 1.1rem 2.5rem;
+    border-radius: 10px;
+    font-size: 1.5rem;
+    font-family: 'Staatliches', cursive;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+.btn_ir_tienda {
+    background: linear-gradient(135deg, #ff69b4, #ff1493);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 15px rgba(255,105,180,0.3);
+}
+.btn_ver_pedidos { background: white; color: #ff69b4; border: 2px solid #ff69b4; }
+.btn_ir_tienda:hover { transform: translateY(-2px); }
+.btn_ver_pedidos:hover { background: #fff5f8; }
+
+/* Responsive */
+@media (max-width: 900px) {
+    .checkout_grid { grid-template-columns: 1fr; }
+    .checkout_resumen { order: -1; }
+    .resumen_sticky { position: static; }
+}
+@media (max-width: 600px) {
+    .form_row { grid-template-columns: 1fr; }
+    .cuenta_header { flex-direction: column; text-align: center; }
+}

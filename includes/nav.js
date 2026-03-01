@@ -347,6 +347,12 @@ btnHamburguesa.addEventListener('click', () => {
     document.body.classList.toggle('menu-abierto');
 });
 
+// Botón carrito → abrir drawer
+document.querySelector(".btn_carrito")?.addEventListener("click", async () => {
+    const { abrirCarrito } = await import("/includes/carritoDrawer.js");
+    abrirCarrito();
+});
+
 // Tabs
 document.querySelectorAll('.auth_tab').forEach(tab => {
     tab.addEventListener('click', () => {
@@ -825,8 +831,8 @@ function actualizarMenuUsuario(user) {
                 <small>${user.email}</small>
             </div>
             <hr>
-            <a href="#" class="menu_usuario_item">Mi cuenta</a>
-            <a href="#" class="menu_usuario_item">Mis pedidos</a>
+            <a href="/pages/cuenta.html" class="menu_usuario_item">Mi cuenta</a>
+            <a href="/pages/cuenta.html#pedidos" class="menu_usuario_item" id="ir-pedidos">Mis pedidos</a>
             <a href="#" class="menu_usuario_item" id="btn-cerrar-sesion">Cerrar sesión</a>
         `;
         btnUsuario.parentElement.appendChild(menu);
