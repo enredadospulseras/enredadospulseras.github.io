@@ -67,7 +67,7 @@ export async function generarSecretoTotp(email) {
             algorithm: 'SHA1',
             digits: 6,
             period: 30,
-            secret: secretBase32
+            secret: OTPAuth.Secret.fromBase32(secretBase32)  // ← Corrección: decodificar base32
         });
         const totpUri = totp.toString();
         return { success: true, secretBase32, totpUri };
@@ -84,9 +84,9 @@ export async function verificarCodigoTotp(secretBase32, codigo) {
             algorithm: 'SHA1',
             digits: 6,
             period: 30,
-            secret: secretBase32
+            secret: OTPAuth.Secret.fromBase32(secretBase32)  // ← Corrección: decodificar base32
         });
-        const delta = totp.validate({ token: codigo, window: 1 });
+        const delta = totp.validate({ token: codigo.trim(), window: 1 });
         return delta !== null;
     } catch (error) {
         console.error('Error al verificar TOTP:', error);
