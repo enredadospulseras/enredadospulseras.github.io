@@ -1,7 +1,7 @@
 // ==================== CUENTA.JS ====================
 import { obtenerUsuarioActual, db, auth } from '/includes/firebase.js';
 import { doc, setDoc, getDoc, collection, query, where, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
-import { updateProfile } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+import { updateProfile, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
 
 // ---- Helpers ----
 function mostrarNotif(msg, tipo = 'exito') {
@@ -245,15 +245,22 @@ async function cargarPedidos() {
     }
 }
 
-// ---- Obtener usuario actual (import directo) ----
-function obtenerUsuarioActual() {
-    return auth.currentUser;
+// ---- Hash navigation (e.g. #pedidos) ----
+function activarPanelDesdeHash() {
+    const hash = window.location.hash.replace('#', '');
+    if (!hash) return;
+    const tab = document.querySelector(`.cuenta_tab[data-panel="${hash}"]`);
+    if (tab) tab.click();
 }
 
 // ---- Init ----
-(async function init() {
-    await new Promise(r => setTimeout(r, 600));
-    const user = auth.currentUser;
+let initDone = false;
+onAuthStateChanged(auth, async (user) => {
+    if (initDone) return;
+    initDone = true;
     if (!user) { window.location.href = '/index.html'; return; }
     await cargarDatosUsuario(user);
-})();
+    activarPanelDesdeHash();
+});
+
+window.addEventListener('hashchange', activarPanelDesdeHash);

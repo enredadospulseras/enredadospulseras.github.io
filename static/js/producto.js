@@ -241,7 +241,10 @@ class FavoritoManager {
 
 // Inicializar todo cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', () => {
-    new Carrusel();
+    // Solo inicializar carrusel si hay más de una imagen
+    if (document.querySelectorAll('.carrusel_slide').length > 1) {
+        new Carrusel();
+    }
     new ColorSelector();
     new CantidadSelector();
     new CarritoManager();

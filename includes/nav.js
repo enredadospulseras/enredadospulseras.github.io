@@ -11,7 +11,7 @@ document.getElementById("nav-placeholder").innerHTML = `
             <div class="navegacion_enlaces">
                 <a class="navegacion_enlace navegacion_enlace-activo" href="/index.html">Tienda</a>
                 <a class="navegacion_enlace" href="/pages/nosotros.html">Nosotros</a>
-                <a class="navegacion_enlace" href="#contacto">Contacto</a>
+                <a class="navegacion_enlace" href="/pages/contacto.html">Contacto</a>
             </div>
             <div class="navegacion_acciones">
                 <button class="btn_usuario" aria-label="Usuario">
@@ -341,10 +341,30 @@ function soloNumeros(inputId) {
 
 const btnHamburguesa = document.querySelector('.btn_hamburguesa');
 const navMenu = document.querySelector('.navegacion_menu');
+
+function cerrarMenuMovil() {
+    btnHamburguesa.classList.remove('activo');
+    navMenu.classList.remove('activo');
+    document.body.classList.remove('menu-abierto');
+}
+
 btnHamburguesa.addEventListener('click', () => {
     btnHamburguesa.classList.toggle('activo');
     navMenu.classList.toggle('activo');
     document.body.classList.toggle('menu-abierto');
+});
+
+// Cerrar menú al clic en enlace
+document.querySelectorAll('.navegacion_enlace').forEach(enlace => {
+    enlace.addEventListener('click', cerrarMenuMovil);
+});
+
+// Cerrar menú al clic en overlay (fondo oscuro)
+document.addEventListener('click', (e) => {
+    if (document.body.classList.contains('menu-abierto') &&
+        !navMenu.contains(e.target) && !btnHamburguesa.contains(e.target)) {
+        cerrarMenuMovil();
+    }
 });
 
 // Botón carrito → abrir drawer

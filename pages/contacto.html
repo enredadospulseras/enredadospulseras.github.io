@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto | Enredados</title>
+    <link rel="icon" href="/favicon.png">
+    <link rel="stylesheet" href="/static/css/normalize.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Krub:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&family=Staatliches&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/nav.css">
+    <script src="/includes/main.js" type="module"></script>
+    <style>
+        .contacto_main { padding: 3rem 2rem; max-width: 900px; }
+
+        .contacto_grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .contacto_info {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+        }
+
+        .contacto_info_card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            border: 1px solid #f0f0f0;
+        }
+
+        .contacto_info_card h3 {
+            font-family: 'Staatliches', cursive;
+            font-size: 2rem;
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .contacto_info_card p {
+            font-size: 1.4rem;
+            color: #666;
+            line-height: 1.7;
+            margin-bottom: 0.5rem;
+        }
+
+        .contacto_info_card a {
+            color: #ff69b4;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .contacto_info_card a:hover { text-decoration: underline; }
+
+        .contacto_social_links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .contacto_social_link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: #fff5f8;
+            color: #ff69b4;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1.3rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .contacto_social_link:hover {
+            background: #ff69b4;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .contacto_formulario {
+            background: #fff;
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            border: 1px solid #f0f0f0;
+        }
+
+        .contacto_formulario h2 {
+            font-family: 'Staatliches', cursive;
+            font-size: 2.4rem;
+            color: #2c3e50;
+            margin-bottom: 2rem;
+        }
+
+        .form_grupo { margin-bottom: 1.5rem; }
+        .form_label {
+            display: block;
+            font-size: 1.4rem;
+            font-weight: 500;
+            color: #2c3e50;
+            margin-bottom: 0.6rem;
+        }
+        .form_input {
+            width: 100%;
+            padding: 1.2rem 1.4rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1.5rem;
+            font-family: 'Krub', sans-serif;
+            color: #2c3e50;
+            transition: border-color 0.2s;
+            outline: none;
+        }
+        .form_input:focus { border-color: #ff69b4; }
+
+        textarea.form_input {
+            resize: vertical;
+            min-height: 12rem;
+        }
+
+        .btn_enviar {
+            width: 100%;
+            padding: 1.3rem;
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.8rem;
+            font-family: 'Staatliches', cursive;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 15px rgba(255,105,180,0.35);
+            letter-spacing: 0.5px;
+        }
+        .btn_enviar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255,105,180,0.45);
+        }
+        .btn_enviar:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+        .contacto_titulo {
+            font-family: 'Staatliches', cursive;
+            font-size: 3.5rem;
+            color: #2c3e50;
+        }
+        .contacto_subtitulo {
+            font-size: 1.6rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        .contacto_exito {
+            text-align: center;
+            padding: 3rem;
+            display: none;
+        }
+        .contacto_exito_icono { font-size: 5rem; margin-bottom: 1.5rem; }
+        .contacto_exito h3 {
+            font-family: 'Staatliches', cursive;
+            font-size: 2.4rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+        .contacto_exito p { font-size: 1.4rem; color: #666; }
+
+        .contacto_horario {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .contacto_horario span {
+            font-size: 1.4rem;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .contacto_grid { grid-template-columns: 1fr; }
+            .contacto_info { order: 2; }
+            .contacto_formulario { order: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="nav-placeholder"></div>
+
+    <main class="contenedor contacto_main">
+        <h1 class="contacto_titulo">Contacto</h1>
+        <p class="contacto_subtitulo">¿Tienes alguna pregunta? Estamos encantadas de ayudarte</p>
+
+        <div class="contacto_grid">
+            <!-- Formulario -->
+            <div class="contacto_formulario">
+                <h2>Escríbenos</h2>
+                <form id="form-contacto">
+                    <div class="form_grupo">
+                        <label class="form_label" for="contacto-nombre">Nombre *</label>
+                        <input type="text" id="contacto-nombre" class="form_input" placeholder="Tu nombre" required>
+                    </div>
+                    <div class="form_grupo">
+                        <label class="form_label" for="contacto-email">Correo electrónico *</label>
+                        <input type="email" id="contacto-email" class="form_input" placeholder="tu@email.com" required>
+                    </div>
+                    <div class="form_grupo">
+                        <label class="form_label" for="contacto-asunto">Asunto *</label>
+                        <select id="contacto-asunto" class="form_input" required>
+                            <option value="">Selecciona un asunto</option>
+                            <option value="consulta">Consulta sobre un producto</option>
+                            <option value="pedido">Consulta sobre un pedido</option>
+                            <option value="personalizado">Pedido personalizado</option>
+                            <option value="devolucion">Devolución o cambio</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                    </div>
+                    <div class="form_grupo">
+                        <label class="form_label" for="contacto-mensaje">Mensaje *</label>
+                        <textarea id="contacto-mensaje" class="form_input" placeholder="Cuéntanos en qué podemos ayudarte..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn_enviar" id="btn-enviar-contacto">Enviar mensaje</button>
+                </form>
+                <div class="contacto_exito" id="contacto-exito">
+                    <div class="contacto_exito_icono">💌</div>
+                    <h3>¡Mensaje enviado!</h3>
+                    <p>Te responderemos lo antes posible. Revisa tu bandeja de entrada.</p>
+                </div>
+            </div>
+
+            <!-- Info de contacto -->
+            <div class="contacto_info">
+                <div class="contacto_info_card">
+                    <h3>📧 Email</h3>
+                    <p>Para cualquier consulta, escríbenos a:</p>
+                    <p><a href="mailto:enredados.pulseras@gmail.com">enredados.pulseras@gmail.com</a></p>
+                </div>
+
+                <div class="contacto_info_card">
+                    <h3>📱 Redes Sociales</h3>
+                    <p>Síguenos para ver las últimas novedades y diseños</p>
+                    <div class="contacto_social_links">
+                        <a href="https://www.instagram.com/enredados_pulseras/" target="_blank" class="contacto_social_link">
+                            Instagram
+                        </a>
+                    </div>
+                </div>
+
+                <div class="contacto_info_card">
+                    <h3>⏰ Tiempo de respuesta</h3>
+                    <div class="contacto_horario">
+                        <span>Respondemos en un plazo de 24-48 horas.</span>
+                        <span>Los pedidos personalizados pueden requerir más tiempo de preparación.</span>
+                    </div>
+                </div>
+
+                <div class="contacto_info_card">
+                    <h3>📦 Sobre pedidos</h3>
+                    <p>Si tienes una consulta sobre un pedido existente, incluye tu número de pedido (ENR-XXXXX) en el mensaje para que podamos ayudarte más rápido.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="/includes/nav.js"></script>
+    <script src="/includes/footer.js"></script>
+
+    <script type="module">
+        import { db, obtenerUsuarioActual } from '/includes/firebase.js';
+        import { addDoc, collection } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+        const form = document.getElementById('form-contacto');
+        const exitoDiv = document.getElementById('contacto-exito');
+
+        // Pre-rellenar email si el usuario está logueado
+        const user = obtenerUsuarioActual();
+        if (user) {
+            const emailInput = document.getElementById('contacto-email');
+            if (emailInput && user.email) emailInput.value = user.email;
+            const nombreInput = document.getElementById('contacto-nombre');
+            if (nombreInput && user.displayName) nombreInput.value = user.displayName;
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-enviar-contacto');
+            btn.disabled = true;
+            btn.textContent = 'Enviando...';
+
+            try {
+                const mensaje = {
+                    nombre: document.getElementById('contacto-nombre').value.trim(),
+                    email: document.getElementById('contacto-email').value.trim(),
+                    asunto: document.getElementById('contacto-asunto').value,
+                    mensaje: document.getElementById('contacto-mensaje').value.trim(),
+                    leido: false,
+                    creadoEn: new Date()
+                };
+
+                await addDoc(collection(db, 'mensajes'), mensaje);
+
+                form.style.display = 'none';
+                exitoDiv.style.display = 'block';
+            } catch (err) {
+                console.error(err);
+                const n = document.createElement('div');
+                n.style.cssText = 'position:fixed;top:20px;right:20px;background:white;border-left:4px solid #ef4444;padding:16px 24px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.15);z-index:9999;font-size:1.4rem;font-family:Krub,sans-serif;';
+                n.textContent = 'Error al enviar el mensaje. Inténtalo de nuevo.';
+                document.body.appendChild(n);
+                setTimeout(() => n.remove(), 4000);
+                btn.disabled = false;
+                btn.textContent = 'Enviar mensaje';
+            }
+        });
+    </script>
+</body>
+</html>

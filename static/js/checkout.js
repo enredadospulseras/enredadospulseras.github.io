@@ -1,7 +1,8 @@
 // ==================== CHECKOUT JS ====================
 import { obtenerCarrito, obtenerTotal, vaciarCarrito } from '/includes/carrito.js';
-import { obtenerUsuarioActual, db } from '/includes/firebase.js';
+import { obtenerUsuarioActual, db, auth } from '/includes/firebase.js';
 import { doc, setDoc, getDoc, addDoc, collection } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
 
 // ---- Guard: redirigir si carrito vacío o no logueado ----
 function verificarAcceso() {
@@ -185,7 +186,7 @@ function mostrarConfirmacion(numeroPedido, metodoPago) {
             </div>
             <div class="confirmacion_acciones">
                 <a href="/index.html" class="btn_ir_tienda">Seguir comprando</a>
-                <a href="/pages/cuenta.html" class="btn_ver_pedidos">Ver mis pedidos</a>
+                <a href="/pages/cuenta.html#pedidos" class="btn_ver_pedidos">Ver mis pedidos</a>
             </div>
         </div>
     `;
@@ -193,11 +194,16 @@ function mostrarConfirmacion(numeroPedido, metodoPago) {
 }
 
 // ---- Init ----
-(async function init() {
-    // Esperar un tick para que Firebase auth cargue
-    await new Promise(r => setTimeout(r, 800));
-    if (!verificarAcceso()) return;
+let initDone = false;
+onAuthStateChanged(auth, async (user) => {
+    if (initDone) return;
+    initDone = true;
+    if (!user) { window.location.href = '/index.html'; return; }
+    // Esperar a que el carrito se sincronice
+    await new Promise(r => setTimeout(r, 300));
+    const items = obtenerCarrito();
+    if (items.length === 0) { window.location.href = '/index.html'; return; }
     await cargarDireccion();
     renderResumen();
     document.addEventListener('carritoActualizado', renderResumen);
-})();
+});
