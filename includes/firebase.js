@@ -9,8 +9,6 @@ import {
     updateProfile,
     GoogleAuthProvider,
     signInWithPopup,
-    signInWithRedirect,
-    getRedirectResult,
     setPersistence,
     browserLocalPersistence,
     browserSessionPersistence,
@@ -159,16 +157,8 @@ export async function iniciarSesion(email, password, recordar = false) {
 
 export async function iniciarSesionConGoogle() {
     try {
-        // En localhost usamos popup, en producción redirect (evita problemas COOP)
-        const esLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-
-        if (esLocal) {
-            const result = await signInWithPopup(auth, googleProvider);
-            return await procesarUsuarioGoogle(result.user);
-        } else {
-            await signInWithRedirect(auth, googleProvider);
-            return { success: true, redirecting: true };
-        }
+        const result = await signInWithPopup(auth, googleProvider);
+        return await procesarUsuarioGoogle(result.user);
     } catch (error) {
         console.error('Error con Google:', error);
         return { success: false, error: obtenerMensajeError(error.code) };
@@ -191,18 +181,6 @@ async function procesarUsuarioGoogle(user) {
         return { success: true, user, requiresMfaSetup: true };
     }
     return { success: true, user, requiresMfaVerify: true, totpSecret: datos.totpSecret };
-}
-
-// Llamar al cargar la página para capturar resultado del redirect (producción)
-export async function manejarRedirectGoogle() {
-    try {
-        const result = await getRedirectResult(auth);
-        if (!result) return null;
-        return await procesarUsuarioGoogle(result.user);
-    } catch (error) {
-        console.error('Error manejando redirect Google:', error);
-        return { success: false, error: obtenerMensajeError(error.code) };
-    }
 }
 
 export async function cerrarSesion() {
