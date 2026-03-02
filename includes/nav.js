@@ -756,37 +756,6 @@ document.getElementById('btn-enviar-recuperacion').addEventListener('click', asy
 document.getElementById('btn-volver-login').addEventListener('click', () => { cerrarModal('modal-recuperar'); abrirModal('modal-auth'); });
 document.getElementById('btn-volver-login-2').addEventListener('click', () => { cerrarModal('modal-recuperar'); abrirModal('modal-auth'); });
 
-// ==================== MANEJO REDIRECT GOOGLE (producción) ====================
-
-(async function() {
-    const esLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-    if (esLocal) return; // En local se usa popup, no hay redirect que manejar
-
-    try {
-        const { manejarRedirectGoogle } = await import('/includes/firebase.js');
-        const resultado = await manejarRedirectGoogle();
-        if (!resultado) return;
-
-        if (resultado.success) {
-            if (resultado.requiresMfaSetup) {
-                window._mfaEnProceso = true;
-                mostrarNotificacion('¡Bienvenido! Configura la verificación en dos pasos', 'info');
-                await iniciarSetupMfa();
-            } else if (resultado.requiresMfaVerify) {
-                window._mfaEnProceso = true;
-                mostrarVerificacionMfaLogin(resultado.totpSecret, resultado.user);
-            } else {
-                mostrarNotificacion('¡Conectado con Google!', 'exito');
-                actualizarMenuUsuario(resultado.user);
-            }
-        } else {
-            mostrarNotificacion(resultado.error, 'error');
-        }
-    } catch (err) {
-        // Sin redirect pendiente, ignorar
-    }
-})();
-
 // ==================== OBSERVADOR AUTH ====================
 
 (async function() {
