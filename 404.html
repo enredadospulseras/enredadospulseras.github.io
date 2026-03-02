@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página no encontrada | Enredados</title>
+    <link rel="icon" href="/favicon.png">
+    <link rel="stylesheet" href="/static/css/normalize.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Krub:wght@300;400;500;600;700&family=Staatliches&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/nav.css">
+    <script src="/includes/main.js" type="module"></script>
+    <style>
+        .error_container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+        .error_icono {
+            font-size: 10rem;
+            margin-bottom: 2rem;
+            animation: float404 3s ease-in-out infinite;
+        }
+        @keyframes float404 {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        .error_titulo {
+            font-family: 'Staatliches', cursive;
+            font-size: 8rem;
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+        .error_mensaje {
+            font-size: 2rem;
+            color: #666;
+            margin-bottom: 3rem;
+            max-width: 500px;
+        }
+        .error_acciones {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .error_btn {
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            font-size: 1.6rem;
+            font-family: 'Staatliches', cursive;
+            text-decoration: none;
+            transition: all 0.3s;
+            letter-spacing: 0.5px;
+        }
+        .error_btn-primary {
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255,105,180,0.35);
+        }
+        .error_btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255,105,180,0.45);
+        }
+        .error_btn-secondary {
+            background: white;
+            color: #ff69b4;
+            border: 2px solid #ff69b4;
+        }
+        .error_btn-secondary:hover {
+            background: #fff5f8;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div id="nav-placeholder"></div>
+
+    <div class="error_container">
+        <div class="error_icono">🧶</div>
+        <h1 class="error_titulo">404</h1>
+        <p class="error_mensaje">¡Vaya! Parece que este hilo se ha enredado. La página que buscas no existe.</p>
+        <div class="error_acciones">
+            <a href="/index.html" class="error_btn error_btn-primary">Ir a la tienda</a>
+            <a href="/pages/contacto.html" class="error_btn error_btn-secondary">Contactar</a>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="/includes/nav.js"></script>
+    <script src="/includes/footer.js"></script>
+</body>
+</html>
