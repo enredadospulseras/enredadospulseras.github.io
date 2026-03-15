@@ -1,6 +1,7 @@
 // ==================== BANNER DE COOKIES (GDPR) ====================
 (function() {
-    if (localStorage.getItem('cookies_aceptadas')) return;
+    const consentData = JSON.parse(localStorage.getItem('cookies_aceptadas') || 'null');
+    if (consentData && (Date.now() - consentData.timestamp) < 30 * 24 * 60 * 60 * 1000) return;
 
     const style = document.createElement('style');
     style.textContent = `
@@ -98,13 +99,13 @@
     document.body.appendChild(banner);
 
     document.getElementById('cookies-aceptar').addEventListener('click', () => {
-        localStorage.setItem('cookies_aceptadas', 'todas');
+        localStorage.setItem('cookies_aceptadas', JSON.stringify({ type: 'todas', timestamp: Date.now() }));
         banner.style.animation = 'cookiesSlideUp 0.3s ease reverse';
         setTimeout(() => banner.remove(), 300);
     });
 
     document.getElementById('cookies-rechazar').addEventListener('click', () => {
-        localStorage.setItem('cookies_aceptadas', 'necesarias');
+        localStorage.setItem('cookies_aceptadas', JSON.stringify({ type: 'necesarias', timestamp: Date.now() }));
         banner.style.animation = 'cookiesSlideUp 0.3s ease reverse';
         setTimeout(() => banner.remove(), 300);
     });

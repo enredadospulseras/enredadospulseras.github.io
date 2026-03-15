@@ -189,6 +189,7 @@ document.getElementById("nav-placeholder").innerHTML = `
             </div>
             <div id="mfa-setup-error" class="mfa_error" style="display:none;"></div>
             <button type="button" class="btn_submit" id="btn-activar-mfa">Activar verificación en dos pasos</button>
+            <button type="button" class="btn_link" id="btn-mfa-despues">Configurar más tarde</button>
             <p class="mfa_nota">Tu cuenta quedará protegida con esta configuración</p>
         </div>
     </div>
@@ -401,7 +402,18 @@ document.getElementById('cerrar-modal-auth').addEventListener('click', () => cer
 document.getElementById('modal-auth').addEventListener('click', e => { if (e.target.id === 'modal-auth') cerrarModal('modal-auth'); });
 document.getElementById('cerrar-modal-recuperar').addEventListener('click', () => cerrarModal('modal-recuperar'));
 document.getElementById('modal-recuperar').addEventListener('click', e => { if (e.target.id === 'modal-recuperar') cerrarModal('modal-recuperar'); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarTodos(); });
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+        if (document.getElementById('modal-mfa-setup').classList.contains('activo')) {
+            document.getElementById('btn-mfa-despues').click();
+        } else {
+            cerrarTodos();
+        }
+    }
+});
+document.getElementById('modal-mfa-setup').addEventListener('click', e => {
+    if (e.target.id === 'modal-mfa-setup') document.getElementById('btn-mfa-despues').click();
+});
 
 // Botón cuenta
 document.querySelector('.btn_usuario').addEventListener('click', async (e) => {
@@ -418,7 +430,10 @@ document.querySelector('.btn_usuario').addEventListener('click', async (e) => {
 
 // ==================== SETUP MFA ====================
 
+let _setupMfaEnCurso = false;
 async function iniciarSetupMfa() {
+    if (_setupMfaEnCurso) return;
+    _setupMfaEnCurso = true;
     cerrarTodos();
     
     // Resetear UI
@@ -470,6 +485,8 @@ async function iniciarSetupMfa() {
     } catch (err) {
         console.error(err);
         document.getElementById('qr-loading').innerHTML = '<span style="color:#ef4444">Error al generar QR. Usa el código manual.</span>';
+    } finally {
+        _setupMfaEnCurso = false;
     }
 }
 
@@ -504,7 +521,7 @@ document.getElementById('btn-activar-mfa').addEventListener('click', async () =>
     btn.textContent = 'Verificando...';
 
     try {
-        const { verificarCodigoTotp, guardarMfaActivado, obtenerUsuarioActual } = await import('/includes/firebase.js');
+        const { verificarCodigoTotp, guardarMfaActivado, obtenerUsuarioActual, obtenerDatosUsuario } = await import('/includes/firebase.js');
         const user = obtenerUsuarioActual();
         const esValido = await verificarCodigoTotp(_totpSecretSetup, codigo);
 
@@ -522,7 +539,8 @@ document.getElementById('btn-activar-mfa').addEventListener('click', async () =>
             window._mfaEnProceso = false;
             cerrarModal('modal-mfa-setup');
             mostrarNotificacion('¡Verificación en dos pasos activada! Tu cuenta está protegida.', 'exito');
-            actualizarMenuUsuario(user);
+            const { data } = await obtenerDatosUsuario(user.uid);
+            actualizarMenuUsuario(user, data?.nombre);
         } else {
             errorDiv.textContent = resultado.error;
             errorDiv.style.display = 'block';
@@ -534,6 +552,17 @@ document.getElementById('btn-activar-mfa').addEventListener('click', async () =>
         btn.disabled = false;
         btn.textContent = 'Activar verificación en dos pasos';
     }
+});
+
+// Configurar más tarde
+document.getElementById('btn-mfa-despues').addEventListener('click', async () => {
+    const { cerrarSesion } = await import('/includes/firebase.js');
+    await cerrarSesion();
+    _totpSecretSetup = null;
+    window._mfaEnProceso = false;
+    _setupMfaEnCurso = false;
+    cerrarModal('modal-mfa-setup');
+    mostrarNotificacion('Podrás configurar la verificación en dos pasos la próxima vez que inicies sesión', 'info');
 });
 
 // ==================== VERIFICAR MFA AL LOGIN ====================
@@ -658,6 +687,7 @@ document.getElementById('form-registro').addEventListener('submit', async (e) =>
 
         if (resultado.success) {
             e.target.reset();
+            window._mfaEnProceso = true;
             mostrarNotificacion('¡Cuenta creada! Ahora configura la verificación en dos pasos', 'exito');
             await iniciarSetupMfa();
         } else {
@@ -787,14 +817,14 @@ document.getElementById('btn-volver-login-2').addEventListener('click', () => { 
                 // No tiene MFA configurado → obligar setup
                 window._mfaEnProceso = true;
                 if (btnTexto) btnTexto.textContent = 'Cuenta';
-                mostrarNotificacion('Debes configurar la verificación en dos pasos para continuar', 'info');
                 await iniciarSetupMfa();
                 return;
             }
 
             // MFA configurado y sesión válida → mostrar menú
-            if (btnTexto) btnTexto.textContent = user.displayName || user.email.split('@')[0];
-            actualizarMenuUsuario(user);
+            const nombre = data.nombre || user.displayName || user.email.split('@')[0];
+            if (btnTexto) btnTexto.textContent = nombre;
+            actualizarMenuUsuario(user, nombre);
 
         } else {
             if (btnTexto) btnTexto.textContent = 'Cuenta';
@@ -806,8 +836,11 @@ document.getElementById('btn-volver-login-2').addEventListener('click', () => { 
 
 // ==================== MENÚ USUARIO ====================
 
-function actualizarMenuUsuario(user) {
+function actualizarMenuUsuario(user, nombre) {
     if (!user) return;
+    const displayName = nombre || user.displayName || 'Usuario';
+    const btnTexto = document.querySelector('.btn_usuario .btn_texto');
+    if (btnTexto) btnTexto.textContent = displayName;
     const btnUsuario = document.querySelector('.btn_usuario');
     let menu = document.getElementById('menu-usuario');
     if (!menu) {
@@ -816,7 +849,7 @@ function actualizarMenuUsuario(user) {
         menu.className = 'menu_usuario';
         menu.innerHTML = `
             <div class="menu_usuario_info">
-                <strong>${user.displayName || 'Usuario'}</strong>
+                <strong>${displayName}</strong>
                 <small>${user.email}</small>
             </div>
             <hr>
