@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-analytics.js";
-import { 
-    getAuth, 
+import {
+    getAuth,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     signOut,
@@ -13,6 +13,7 @@ import {
     browserLocalPersistence,
     browserSessionPersistence,
     sendPasswordResetEmail,
+    sendEmailVerification,
     confirmPasswordReset,
     verifyPasswordResetCode
 } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
@@ -128,9 +129,10 @@ export async function registrarUsuario(email, password, nombre) {
             mfaConfigurado: false,
             creadoEn: new Date()
         });
-        return { success: true, user, requiresMfaSetup: true };
+        let emailEnviado = true;
+        try { await sendEmailVerification(user); } catch (e) { emailEnviado = false; }
+        return { success: true, user, requiresEmailVerification: true, emailEnviado };
     } catch (error) {
-        console.error('Error al registrar:', error);
         return { success: false, error: obtenerMensajeError(error.code) };
     }
 }
@@ -141,16 +143,17 @@ export async function iniciarSesion(email, password, recordar = false) {
         await setPersistence(auth, persistence);
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
+        if (!user.emailVerified) {
+            await signOut(auth);
+            return { success: false, error: 'Debes verificar tu correo electrónico antes de iniciar sesión. Revisa tu bandeja de entrada.' };
+        }
         const snap = await getDoc(doc(db, 'usuarios', user.uid));
         const datos = snap.exists() ? snap.data() : {};
-        const mfaConfigurado = datos.mfaConfigurado === true;
-        const totpSecret = datos.totpSecret || null;
-        if (!mfaConfigurado) {
-            return { success: true, user, requiresMfaSetup: true };
+        if (datos.mfaConfigurado) {
+            return { success: true, user, requiresMfaVerify: true, totpSecret: datos.totpSecret };
         }
-        return { success: true, user, requiresMfaVerify: true, totpSecret };
+        return { success: true, user };
     } catch (error) {
-        console.error('Error al iniciar sesión:', error);
         return { success: false, error: obtenerMensajeError(error.code) };
     }
 }
@@ -160,7 +163,6 @@ export async function iniciarSesionConGoogle() {
         const result = await signInWithPopup(auth, googleProvider);
         return await procesarUsuarioGoogle(result.user);
     } catch (error) {
-        console.error('Error con Google:', error);
         return { success: false, error: obtenerMensajeError(error.code) };
     }
 }
@@ -174,13 +176,13 @@ async function procesarUsuarioGoogle(user) {
             mfaConfigurado: false,
             creadoEn: new Date()
         });
-        return { success: true, user, requiresMfaSetup: true };
+        return { success: true, user };
     }
     const datos = snap.data();
-    if (!datos.mfaConfigurado) {
-        return { success: true, user, requiresMfaSetup: true };
+    if (datos.mfaConfigurado) {
+        return { success: true, user, requiresMfaVerify: true, totpSecret: datos.totpSecret };
     }
-    return { success: true, user, requiresMfaVerify: true, totpSecret: datos.totpSecret };
+    return { success: true, user };
 }
 
 export async function cerrarSesion() {
@@ -189,6 +191,33 @@ export async function cerrarSesion() {
         return { success: true };
     } catch (error) {
         return { success: false, error: obtenerMensajeError(error.code) };
+    }
+}
+
+export async function recargarUsuario() {
+    const user = auth.currentUser;
+    if (!user) return null;
+    await user.reload();
+    return auth.currentUser;
+}
+
+export async function reenviarVerificacion() {
+    try {
+        const user = auth.currentUser;
+        if (!user) return { success: false, error: 'No hay sesión activa.' };
+        await sendEmailVerification(user);
+        return { success: true };
+    } catch (error) {
+        return { success: false, error: obtenerMensajeError(error.code) };
+    }
+}
+
+export async function desactivarMfa(uid) {
+    try {
+        await setDoc(doc(db, 'usuarios', uid), { mfaConfigurado: false, totpSecret: null }, { merge: true });
+        return { success: true };
+    } catch (error) {
+        return { success: false, error: 'Error al desactivar la verificación.' };
     }
 }
 

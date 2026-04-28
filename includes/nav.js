@@ -135,6 +135,17 @@ document.getElementById("nav-placeholder").innerHTML = `
                     </button>
                 </div>
             </form>
+
+            <!-- ===== VERIFICACIÓN EMAIL ===== -->
+            <div id="vista-verificacion" style="display:none; text-align:center; padding:1rem 0;">
+                <div class="verificacion_icono">✉️</div>
+                <h2 class="auth_titulo">Revisa tu correo</h2>
+                <p class="mfa_subtitulo" id="verificacion-msg">Hemos enviado un enlace de verificación a<br><strong id="verificacion-email-dest"></strong></p>
+                <div class="spinner_verificacion"></div>
+                <p style="font-size:1.3rem; color:var(--gris); margin:1rem 0;">Esperando verificación...</p>
+                <p style="font-size:1.2rem; color:var(--gris);">¿No lo ves? Revisa la carpeta de <strong>spam</strong> o usa el botón de abajo.</p>
+                <button type="button" class="btn_link" id="btn-reenviar-verificacion">Reenviar correo</button>
+            </div>
         </div>
     </div>
 
@@ -242,6 +253,34 @@ document.getElementById("nav-placeholder").innerHTML = `
             </div>
         </div>
     </div>
+
+    <!-- ===== MODAL PERFIL ===== -->
+    <div class="modal_overlay" id="modal-perfil">
+        <div class="modal_contenido modal_perfil_contenido">
+            <button class="modal_cerrar" id="cerrar-modal-perfil" aria-label="Cerrar">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+            <div id="perfil-avatar" class="perfil_avatar">U</div>
+            <h2 id="perfil-nombre" class="perfil_nombre_texto"></h2>
+            <p id="perfil-email" class="perfil_email_texto"></p>
+            <div class="perfil_opciones">
+                <button class="perfil_opcion" id="btn-perfil-mfa">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    <span id="perfil-mfa-texto">Activar verificación en dos pasos</span>
+                </button>
+                <a href="/pages/cuenta.html" class="perfil_opcion">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg>
+                    Mi cuenta
+                </a>
+                <button class="perfil_opcion perfil_opcion_peligro" id="btn-perfil-cerrar-sesion">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    Cerrar sesión
+                </button>
+            </div>
+        </div>
+    </div>
 `;
 
 // ==================== ESTILOS ====================
@@ -290,14 +329,30 @@ document.getElementById("nav-placeholder").innerHTML = `
         .menu_usuario_item { display: block; padding: 10px 12px; color: #374151; text-decoration: none; border-radius: 4px; transition: background 0.2s; }
         .menu_usuario_item:hover { background: #f3f4f6; }
         .navegacion_acciones { position: relative; }
+        .verificacion_icono { font-size: 4rem; margin-bottom: 1.5rem; }
+        .spinner_verificacion { width: 3rem; height: 3rem; border: 3px solid var(--acentoClaro); border-top-color: var(--secundario); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 1.5rem auto; }
+        .modal_perfil_contenido { max-width: 380px; text-align: center; }
+        .perfil_avatar { width: 7rem; height: 7rem; border-radius: 50%; background: linear-gradient(135deg, var(--secundario), var(--secundarioOscuro)); color: white; font-size: 3rem; font-weight: 700; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; }
+        .perfil_nombre_texto { font-size: 2rem; font-weight: 700; margin-bottom: 0.4rem; }
+        .perfil_email_texto { font-size: 1.3rem; color: var(--gris); margin-bottom: 2.5rem; }
+        .perfil_opciones { display: flex; flex-direction: column; gap: 1rem; text-align: left; }
+        .perfil_opcion { display: flex; align-items: center; gap: 1.2rem; padding: 1.2rem 1.5rem; border: 1px solid #e5e7eb; border-radius: 8px; background: white; cursor: pointer; font-size: 1.4rem; color: #374151; transition: background 0.2s, border-color 0.2s; width: 100%; text-decoration: none; font-family: var(--fuenteTexto); }
+        .perfil_opcion:hover { background: #f9fafb; border-color: #d1d5db; }
+        .perfil_opcion_peligro { color: #ef4444; border-color: #fecaca; }
+        .perfil_opcion_peligro:hover { background: #fef2f2; border-color: #fca5a5; }
+        .perfil_mfa_activo { color: #10b981 !important; border-color: #a7f3d0 !important; }
+        .perfil_mfa_activo:hover { background: #f0fdf4 !important; }
     `;
     document.head.appendChild(s);
 })();
 
 // ==================== VARIABLES GLOBALES ====================
-let _totpSecretSetup = null;      // Secreto durante el setup de MFA
-let _totpSecretLogin = null;      // Secreto para verificar al hacer login
-let _usuarioSesionPendiente = null; // Usuario en espera de verificar MFA
+let _totpSecretSetup = null;
+let _totpSecretLogin = null;
+let _usuarioSesionPendiente = null;
+let _usuarioActual = null;
+let _datosActuales = null;
+let _pollingInterval = null;
 
 // ==================== HELPERS ====================
 
@@ -310,7 +365,7 @@ function cerrarModal(id) {
     document.body.style.overflow = '';
 }
 function cerrarTodos() {
-    ['modal-auth','modal-mfa-setup','modal-mfa-login','modal-recuperar'].forEach(cerrarModal);
+    ['modal-auth','modal-mfa-setup','modal-mfa-login','modal-recuperar','modal-perfil'].forEach(cerrarModal);
 }
 
 function mostrarNotificacion(mensaje, tipo = 'info') {
@@ -398,8 +453,8 @@ soloNumeros('mfa-setup-codigo');
 soloNumeros('mfa-login-codigo');
 
 // Cerrar modales
-document.getElementById('cerrar-modal-auth').addEventListener('click', () => cerrarModal('modal-auth'));
-document.getElementById('modal-auth').addEventListener('click', e => { if (e.target.id === 'modal-auth') cerrarModal('modal-auth'); });
+document.getElementById('cerrar-modal-auth').addEventListener('click', () => { cancelarVerificacionSiPendiente(); cerrarModal('modal-auth'); });
+document.getElementById('modal-auth').addEventListener('click', e => { if (e.target.id === 'modal-auth') { cancelarVerificacionSiPendiente(); cerrarModal('modal-auth'); } });
 document.getElementById('cerrar-modal-recuperar').addEventListener('click', () => cerrarModal('modal-recuperar'));
 document.getElementById('modal-recuperar').addEventListener('click', e => { if (e.target.id === 'modal-recuperar') cerrarModal('modal-recuperar'); });
 document.addEventListener('keydown', e => {
@@ -423,8 +478,7 @@ document.querySelector('.btn_usuario').addEventListener('click', async (e) => {
     if (!user) {
         abrirModal('modal-auth');
     } else {
-        const m = document.getElementById('menu-usuario');
-        if (m) m.classList.toggle('activo');
+        abrirModalPerfil();
     }
 });
 
@@ -540,6 +594,7 @@ document.getElementById('btn-activar-mfa').addEventListener('click', async () =>
             cerrarModal('modal-mfa-setup');
             mostrarNotificacion('¡Verificación en dos pasos activada! Tu cuenta está protegida.', 'exito');
             const { data } = await obtenerDatosUsuario(user.uid);
+            _datosActuales = data;
             actualizarMenuUsuario(user, data?.nombre);
         } else {
             errorDiv.textContent = resultado.error;
@@ -556,13 +611,18 @@ document.getElementById('btn-activar-mfa').addEventListener('click', async () =>
 
 // Configurar más tarde
 document.getElementById('btn-mfa-despues').addEventListener('click', async () => {
-    const { cerrarSesion } = await import('/includes/firebase.js');
-    await cerrarSesion();
     _totpSecretSetup = null;
     window._mfaEnProceso = false;
     _setupMfaEnCurso = false;
     cerrarModal('modal-mfa-setup');
-    mostrarNotificacion('Podrás configurar la verificación en dos pasos la próxima vez que inicies sesión', 'info');
+    if (_usuarioActual) {
+        const { obtenerDatosUsuario } = await import('/includes/firebase.js');
+        const { data } = await obtenerDatosUsuario(_usuarioActual.uid);
+        const nombre = data?.nombre || _usuarioActual.displayName || _usuarioActual.email.split('@')[0];
+        _datosActuales = data;
+        actualizarMenuUsuario(_usuarioActual, nombre);
+    }
+    mostrarNotificacion('Puedes activar la verificación en dos pasos desde tu perfil', 'info');
 });
 
 // ==================== VERIFICAR MFA AL LOGIN ====================
@@ -599,7 +659,12 @@ document.getElementById('btn-verificar-mfa-login').addEventListener('click', asy
             window._mfaEnProceso = false;
             cerrarModal('modal-mfa-login');
             mostrarNotificacion('¡Bienvenido! Sesión iniciada correctamente', 'exito');
-            actualizarMenuUsuario(_usuarioSesionPendiente);
+            const { obtenerDatosUsuario } = await import('/includes/firebase.js');
+            const { data } = await obtenerDatosUsuario(_usuarioSesionPendiente.uid);
+            const nombre = data?.nombre || _usuarioSesionPendiente.displayName || _usuarioSesionPendiente.email.split('@')[0];
+            _usuarioActual = _usuarioSesionPendiente;
+            _datosActuales = data;
+            actualizarMenuUsuario(_usuarioSesionPendiente, nombre);
             _totpSecretLogin = null;
             _usuarioSesionPendiente = null;
         } else {
@@ -638,21 +703,21 @@ document.getElementById('form-login').addEventListener('submit', async (e) => {
     btn.textContent = 'Iniciando sesión...';
 
     try {
-        const { iniciarSesion } = await import('/includes/firebase.js');
+        const { iniciarSesion, obtenerDatosUsuario } = await import('/includes/firebase.js');
         const resultado = await iniciarSesion(email, password, recordar);
 
         if (resultado.success) {
-            if (resultado.requiresMfaSetup) {
-                window._mfaEnProceso = true;
-                mostrarNotificacion('Por favor configura la verificación en dos pasos', 'info');
-                await iniciarSetupMfa();
-            } else if (resultado.requiresMfaVerify) {
+            if (resultado.requiresMfaVerify) {
                 window._mfaEnProceso = true;
                 mostrarVerificacionMfaLogin(resultado.totpSecret, resultado.user);
             } else {
                 cerrarModal('modal-auth');
                 mostrarNotificacion('¡Bienvenido!', 'exito');
-                actualizarMenuUsuario(resultado.user);
+                const { data } = await obtenerDatosUsuario(resultado.user.uid);
+                const nombre = data?.nombre || resultado.user.displayName || resultado.user.email.split('@')[0];
+                _usuarioActual = resultado.user;
+                _datosActuales = data;
+                actualizarMenuUsuario(resultado.user, nombre);
             }
             e.target.reset();
         } else {
@@ -682,18 +747,23 @@ document.getElementById('form-registro').addEventListener('submit', async (e) =>
     btn.textContent = 'Creando cuenta...';
 
     try {
+        window._mfaEnProceso = true;
+        window._verificacionPendiente = true;
         const { registrarUsuario } = await import('/includes/firebase.js');
         const resultado = await registrarUsuario(email, password, nombre);
 
         if (resultado.success) {
             e.target.reset();
-            window._mfaEnProceso = true;
-            mostrarNotificacion('¡Cuenta creada! Ahora configura la verificación en dos pasos', 'exito');
-            await iniciarSetupMfa();
+            mostrarVistaVerificacion(email, resultado.emailEnviado);
+            iniciarPollingVerificacion();
         } else {
+            window._mfaEnProceso = false;
+            window._verificacionPendiente = false;
             mostrarNotificacion(resultado.error, 'error');
         }
     } catch (err) {
+        window._mfaEnProceso = false;
+        window._verificacionPendiente = false;
         mostrarNotificacion('Error al crear la cuenta. Intenta nuevamente', 'error');
     } finally {
         btn.disabled = false;
@@ -712,20 +782,21 @@ async function manejarGoogle() {
         const { iniciarSesionConGoogle } = await import('/includes/firebase.js');
         const resultado = await iniciarSesionConGoogle();
 
-        if (resultado.redirecting) return; // En producción redirige, no hay resultado aquí
+        if (resultado.redirecting) return;
 
         if (resultado.success) {
-            if (resultado.requiresMfaSetup) {
-                window._mfaEnProceso = true;
-                mostrarNotificacion('¡Bienvenido! Configura la verificación en dos pasos', 'info');
-                await iniciarSetupMfa();
-            } else if (resultado.requiresMfaVerify) {
+            if (resultado.requiresMfaVerify) {
                 window._mfaEnProceso = true;
                 mostrarVerificacionMfaLogin(resultado.totpSecret, resultado.user);
             } else {
                 cerrarModal('modal-auth');
                 mostrarNotificacion('¡Conectado con Google!', 'exito');
-                actualizarMenuUsuario(resultado.user);
+                const { obtenerDatosUsuario } = await import('/includes/firebase.js');
+                const { data } = await obtenerDatosUsuario(resultado.user.uid);
+                const nombre = data?.nombre || resultado.user.displayName || resultado.user.email.split('@')[0];
+                _usuarioActual = resultado.user;
+                _datosActuales = data;
+                actualizarMenuUsuario(resultado.user, nombre);
             }
         } else {
             mostrarNotificacion(resultado.error, 'error');
@@ -791,83 +862,148 @@ document.getElementById('btn-volver-login-2').addEventListener('click', () => { 
 (async function() {
     const { observarEstadoAutenticacion, obtenerDatosUsuario, cerrarSesion } = await import('/includes/firebase.js');
 
-    // Bandera para evitar que el observador interrumpa un flujo de login/MFA activo
-    // (cuando el usuario acaba de hacer login y está en el modal de MFA setup/verify)
     window._mfaEnProceso = false;
+    window._verificacionPendiente = false;
 
     observarEstadoAutenticacion(async (user) => {
         const btnTexto = document.querySelector('.btn_usuario .btn_texto');
 
         if (user) {
-            // Si hay un flujo de MFA activo (setup o verificación), no interrumpir
-            if (window._mfaEnProceso) return;
-
-            // Verificar estado MFA en Firestore
+            if (window._mfaEnProceso || window._verificacionPendiente) return;
+            if (!user.emailVerified) { await cerrarSesion(); return; }
             const { success, data } = await obtenerDatosUsuario(user.uid);
-
-            if (!success) {
-                // Error real leyendo Firestore (ej: sin conexión, reglas denegadas) — cerrar sesión por seguridad
-                await cerrarSesion();
-                return;
-            }
-
-            // Si data es null significa que el documento aún no existe (usuario nuevo)
-            // En ese caso también hay que configurar MFA
-            if (!data || !data.mfaConfigurado) {
-                // No tiene MFA configurado → obligar setup
-                window._mfaEnProceso = true;
-                if (btnTexto) btnTexto.textContent = 'Cuenta';
-                await iniciarSetupMfa();
-                return;
-            }
-
-            // MFA configurado y sesión válida → mostrar menú
-            const nombre = data.nombre || user.displayName || user.email.split('@')[0];
+            if (!success) { await cerrarSesion(); return; }
+            const nombre = data?.nombre || user.displayName || user.email.split('@')[0];
             if (btnTexto) btnTexto.textContent = nombre;
+            _usuarioActual = user;
+            _datosActuales = data;
             actualizarMenuUsuario(user, nombre);
-
         } else {
             if (btnTexto) btnTexto.textContent = 'Cuenta';
-            const m = document.getElementById('menu-usuario');
-            if (m) m.remove();
+            _usuarioActual = null;
+            _datosActuales = null;
         }
     });
 })();
 
-// ==================== MENÚ USUARIO ====================
+// ==================== PERFIL USUARIO ====================
 
 function actualizarMenuUsuario(user, nombre) {
     if (!user) return;
+    _usuarioActual = user;
     const displayName = nombre || user.displayName || 'Usuario';
     const btnTexto = document.querySelector('.btn_usuario .btn_texto');
     if (btnTexto) btnTexto.textContent = displayName;
-    const btnUsuario = document.querySelector('.btn_usuario');
-    let menu = document.getElementById('menu-usuario');
-    if (!menu) {
-        menu = document.createElement('div');
-        menu.id = 'menu-usuario';
-        menu.className = 'menu_usuario';
-        menu.innerHTML = `
-            <div class="menu_usuario_info">
-                <strong>${displayName}</strong>
-                <small>${user.email}</small>
-            </div>
-            <hr>
-            <a href="/pages/cuenta.html" class="menu_usuario_item">Mi cuenta</a>
-            <a href="/pages/cuenta.html#pedidos" class="menu_usuario_item" id="ir-pedidos">Mis pedidos</a>
-            <a href="#" class="menu_usuario_item" id="btn-cerrar-sesion">Cerrar sesión</a>
-        `;
-        btnUsuario.parentElement.appendChild(menu);
-
-        document.addEventListener('click', (e) => {
-            if (!menu.contains(e.target) && !btnUsuario.contains(e.target)) menu.classList.remove('activo');
-        });
-
-        document.getElementById('btn-cerrar-sesion').addEventListener('click', async (e) => {
-            e.preventDefault();
-            const { cerrarSesion } = await import('/includes/firebase.js');
-            const r = await cerrarSesion();
-            if (r.success) { mostrarNotificacion('Sesión cerrada correctamente', 'exito'); menu.remove(); }
-        });
-    }
 }
+
+function abrirModalPerfil() {
+    if (!_usuarioActual) return;
+    const nombre = _datosActuales?.nombre || _usuarioActual.displayName || 'Usuario';
+    const email = _usuarioActual.email || '';
+    const mfaActivo = _datosActuales?.mfaConfigurado || false;
+
+    document.getElementById('perfil-avatar').textContent = nombre.charAt(0).toUpperCase();
+    document.getElementById('perfil-nombre').textContent = nombre;
+    document.getElementById('perfil-email').textContent = email;
+    document.getElementById('perfil-mfa-texto').textContent = mfaActivo
+        ? 'Desactivar verificación en dos pasos'
+        : 'Activar verificación en dos pasos';
+    const btnMfa = document.getElementById('btn-perfil-mfa');
+    btnMfa.classList.toggle('perfil_mfa_activo', mfaActivo);
+
+    abrirModal('modal-perfil');
+}
+
+document.getElementById('cerrar-modal-perfil').addEventListener('click', () => cerrarModal('modal-perfil'));
+document.getElementById('modal-perfil').addEventListener('click', e => { if (e.target.id === 'modal-perfil') cerrarModal('modal-perfil'); });
+
+document.getElementById('btn-perfil-mfa').addEventListener('click', async () => {
+    if (!_usuarioActual) return;
+    cerrarModal('modal-perfil');
+    if (_datosActuales?.mfaConfigurado) {
+        const { desactivarMfa, obtenerDatosUsuario } = await import('/includes/firebase.js');
+        const r = await desactivarMfa(_usuarioActual.uid);
+        if (r.success) {
+            const { data } = await obtenerDatosUsuario(_usuarioActual.uid);
+            _datosActuales = data;
+            mostrarNotificacion('Verificación en dos pasos desactivada.', 'info');
+        } else {
+            mostrarNotificacion(r.error, 'error');
+        }
+    } else {
+        window._mfaEnProceso = true;
+        await iniciarSetupMfa();
+    }
+});
+
+document.getElementById('btn-perfil-cerrar-sesion').addEventListener('click', async () => {
+    const { cerrarSesion } = await import('/includes/firebase.js');
+    const r = await cerrarSesion();
+    if (r.success) {
+        cerrarModal('modal-perfil');
+        _usuarioActual = null;
+        _datosActuales = null;
+        const btnTexto = document.querySelector('.btn_usuario .btn_texto');
+        if (btnTexto) btnTexto.textContent = 'Cuenta';
+        mostrarNotificacion('Sesión cerrada correctamente', 'exito');
+    }
+});
+
+// ==================== VERIFICACIÓN EMAIL ====================
+
+function mostrarVistaVerificacion(email, emailEnviado = true) {
+    document.getElementById('verificacion-email-dest').textContent = email;
+    const msg = document.getElementById('verificacion-msg');
+    if (emailEnviado) {
+        msg.innerHTML = 'Hemos enviado un enlace de verificación a<br><strong>' + email + '</strong>';
+    } else {
+        msg.innerHTML = 'Cuenta creada. Pulsa <strong>Reenviar correo</strong> para recibir el enlace de verificación.';
+    }
+    document.querySelector('#modal-auth .auth_tabs').style.display = 'none';
+    document.querySelectorAll('#modal-auth .auth_form').forEach(f => f.style.display = 'none');
+    document.getElementById('vista-verificacion').style.display = 'block';
+}
+
+function ocultarVistaVerificacion() {
+    document.querySelector('#modal-auth .auth_tabs').style.display = '';
+    document.querySelectorAll('#modal-auth .auth_form').forEach(f => f.style.display = '');
+    document.getElementById('vista-verificacion').style.display = 'none';
+}
+
+function cancelarVerificacionSiPendiente() {
+    if (!window._verificacionPendiente) return;
+    if (_pollingInterval) { clearInterval(_pollingInterval); _pollingInterval = null; }
+    window._verificacionPendiente = false;
+    window._mfaEnProceso = false;
+    ocultarVistaVerificacion();
+    import('/includes/firebase.js').then(({ cerrarSesion }) => cerrarSesion());
+}
+
+function iniciarPollingVerificacion() {
+    if (_pollingInterval) clearInterval(_pollingInterval);
+    _pollingInterval = setInterval(async () => {
+        const { recargarUsuario, obtenerDatosUsuario } = await import('/includes/firebase.js');
+        const user = await recargarUsuario();
+        if (user && user.emailVerified) {
+            clearInterval(_pollingInterval);
+            _pollingInterval = null;
+            window._verificacionPendiente = false;
+            window._mfaEnProceso = false;
+            ocultarVistaVerificacion();
+            cerrarModal('modal-auth');
+            const { data } = await obtenerDatosUsuario(user.uid);
+            const nombre = data?.nombre || user.displayName || user.email.split('@')[0];
+            _usuarioActual = user;
+            _datosActuales = data;
+            actualizarMenuUsuario(user, nombre);
+            mostrarNotificacion('¡Correo verificado! Bienvenido a Enredados.', 'exito');
+        }
+    }, 3000);
+}
+
+document.getElementById('btn-reenviar-verificacion').addEventListener('click', async () => {
+    const { reenviarVerificacion } = await import('/includes/firebase.js');
+    const r = await reenviarVerificacion();
+    if (r.success) mostrarNotificacion('Correo reenviado. Revisa tu bandeja de entrada.', 'exito');
+    else mostrarNotificacion(r.error || 'Error al reenviar', 'error');
+});

@@ -415,6 +415,9 @@ body::after {
 
 /* Botón Ver producto */
 .btn_agregar {
+    display: block;
+    text-align: center;
+    text-decoration: none;
     width: 100%;
     background: linear-gradient(135deg, var(--secundario), var(--secundarioOscuro));
     color: var(--blanco);
@@ -610,6 +613,8 @@ body::after {
 }
 .btn_agregar {
     display: block;
+    text-align: center;
+    text-decoration: none;
     width: calc(100% - 2rem);
     margin: 0.5rem 1rem 1rem;
     padding: 0.9rem 1rem;
