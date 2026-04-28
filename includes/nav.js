@@ -254,33 +254,6 @@ document.getElementById("nav-placeholder").innerHTML = `
         </div>
     </div>
 
-    <!-- ===== MODAL PERFIL ===== -->
-    <div class="modal_overlay" id="modal-perfil">
-        <div class="modal_contenido modal_perfil_contenido">
-            <button class="modal_cerrar" id="cerrar-modal-perfil" aria-label="Cerrar">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-                </svg>
-            </button>
-            <div id="perfil-avatar" class="perfil_avatar">U</div>
-            <h2 id="perfil-nombre" class="perfil_nombre_texto"></h2>
-            <p id="perfil-email" class="perfil_email_texto"></p>
-            <div class="perfil_opciones">
-                <button class="perfil_opcion" id="btn-perfil-mfa">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                    <span id="perfil-mfa-texto">Activar verificación en dos pasos</span>
-                </button>
-                <a href="/pages/cuenta.html" class="perfil_opcion">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg>
-                    Mi cuenta
-                </a>
-                <button class="perfil_opcion perfil_opcion_peligro" id="btn-perfil-cerrar-sesion">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-                    Cerrar sesión
-                </button>
-            </div>
-        </div>
-    </div>
 `;
 
 // ==================== ESTILOS ====================
@@ -331,17 +304,6 @@ document.getElementById("nav-placeholder").innerHTML = `
         .navegacion_acciones { position: relative; }
         .verificacion_icono { font-size: 4rem; margin-bottom: 1.5rem; }
         .spinner_verificacion { width: 3rem; height: 3rem; border: 3px solid var(--acentoClaro); border-top-color: var(--secundario); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 1.5rem auto; }
-        .modal_perfil_contenido { max-width: 380px; text-align: center; }
-        .perfil_avatar { width: 7rem; height: 7rem; border-radius: 50%; background: linear-gradient(135deg, var(--secundario), var(--secundarioOscuro)); color: white; font-size: 3rem; font-weight: 700; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; }
-        .perfil_nombre_texto { font-size: 2rem; font-weight: 700; margin-bottom: 0.4rem; }
-        .perfil_email_texto { font-size: 1.3rem; color: var(--gris); margin-bottom: 2.5rem; }
-        .perfil_opciones { display: flex; flex-direction: column; gap: 1rem; text-align: left; }
-        .perfil_opcion { display: flex; align-items: center; gap: 1.2rem; padding: 1.2rem 1.5rem; border: 1px solid #e5e7eb; border-radius: 8px; background: white; cursor: pointer; font-size: 1.4rem; color: #374151; transition: background 0.2s, border-color 0.2s; width: 100%; text-decoration: none; font-family: var(--fuenteTexto); }
-        .perfil_opcion:hover { background: #f9fafb; border-color: #d1d5db; }
-        .perfil_opcion_peligro { color: #ef4444; border-color: #fecaca; }
-        .perfil_opcion_peligro:hover { background: #fef2f2; border-color: #fca5a5; }
-        .perfil_mfa_activo { color: #10b981 !important; border-color: #a7f3d0 !important; }
-        .perfil_mfa_activo:hover { background: #f0fdf4 !important; }
     `;
     document.head.appendChild(s);
 })();
@@ -365,7 +327,7 @@ function cerrarModal(id) {
     document.body.style.overflow = '';
 }
 function cerrarTodos() {
-    ['modal-auth','modal-mfa-setup','modal-mfa-login','modal-recuperar','modal-perfil'].forEach(cerrarModal);
+    ['modal-auth','modal-mfa-setup','modal-mfa-login','modal-recuperar'].forEach(cerrarModal);
 }
 
 function mostrarNotificacion(mensaje, tipo = 'info') {
@@ -473,12 +435,13 @@ document.getElementById('modal-mfa-setup').addEventListener('click', e => {
 // Botón cuenta
 document.querySelector('.btn_usuario').addEventListener('click', async (e) => {
     e.stopPropagation();
+    cerrarMenuMovil();
     const { obtenerUsuarioActual } = await import('/includes/firebase.js');
     const user = obtenerUsuarioActual();
     if (!user) {
         abrirModal('modal-auth');
     } else {
-        abrirModalPerfil();
+        window.location.href = '/pages/cuenta.html';
     }
 });
 
@@ -754,7 +717,7 @@ document.getElementById('form-registro').addEventListener('submit', async (e) =>
 
         if (resultado.success) {
             e.target.reset();
-            mostrarVistaVerificacion(email, resultado.emailEnviado);
+            mostrarVistaVerificacion(email, resultado.emailEnviado, resultado.emailError);
             iniciarPollingVerificacion();
         } else {
             window._mfaEnProceso = false;
@@ -896,68 +859,15 @@ function actualizarMenuUsuario(user, nombre) {
     if (btnTexto) btnTexto.textContent = displayName;
 }
 
-function abrirModalPerfil() {
-    if (!_usuarioActual) return;
-    const nombre = _datosActuales?.nombre || _usuarioActual.displayName || 'Usuario';
-    const email = _usuarioActual.email || '';
-    const mfaActivo = _datosActuales?.mfaConfigurado || false;
-
-    document.getElementById('perfil-avatar').textContent = nombre.charAt(0).toUpperCase();
-    document.getElementById('perfil-nombre').textContent = nombre;
-    document.getElementById('perfil-email').textContent = email;
-    document.getElementById('perfil-mfa-texto').textContent = mfaActivo
-        ? 'Desactivar verificación en dos pasos'
-        : 'Activar verificación en dos pasos';
-    const btnMfa = document.getElementById('btn-perfil-mfa');
-    btnMfa.classList.toggle('perfil_mfa_activo', mfaActivo);
-
-    abrirModal('modal-perfil');
-}
-
-document.getElementById('cerrar-modal-perfil').addEventListener('click', () => cerrarModal('modal-perfil'));
-document.getElementById('modal-perfil').addEventListener('click', e => { if (e.target.id === 'modal-perfil') cerrarModal('modal-perfil'); });
-
-document.getElementById('btn-perfil-mfa').addEventListener('click', async () => {
-    if (!_usuarioActual) return;
-    cerrarModal('modal-perfil');
-    if (_datosActuales?.mfaConfigurado) {
-        const { desactivarMfa, obtenerDatosUsuario } = await import('/includes/firebase.js');
-        const r = await desactivarMfa(_usuarioActual.uid);
-        if (r.success) {
-            const { data } = await obtenerDatosUsuario(_usuarioActual.uid);
-            _datosActuales = data;
-            mostrarNotificacion('Verificación en dos pasos desactivada.', 'info');
-        } else {
-            mostrarNotificacion(r.error, 'error');
-        }
-    } else {
-        window._mfaEnProceso = true;
-        await iniciarSetupMfa();
-    }
-});
-
-document.getElementById('btn-perfil-cerrar-sesion').addEventListener('click', async () => {
-    const { cerrarSesion } = await import('/includes/firebase.js');
-    const r = await cerrarSesion();
-    if (r.success) {
-        cerrarModal('modal-perfil');
-        _usuarioActual = null;
-        _datosActuales = null;
-        const btnTexto = document.querySelector('.btn_usuario .btn_texto');
-        if (btnTexto) btnTexto.textContent = 'Cuenta';
-        mostrarNotificacion('Sesión cerrada correctamente', 'exito');
-    }
-});
-
 // ==================== VERIFICACIÓN EMAIL ====================
 
-function mostrarVistaVerificacion(email, emailEnviado = true) {
+function mostrarVistaVerificacion(email, emailEnviado = true, emailError = null) {
     document.getElementById('verificacion-email-dest').textContent = email;
     const msg = document.getElementById('verificacion-msg');
     if (emailEnviado) {
         msg.innerHTML = 'Hemos enviado un enlace de verificación a<br><strong>' + email + '</strong>';
     } else {
-        msg.innerHTML = 'Cuenta creada. Pulsa <strong>Reenviar correo</strong> para recibir el enlace de verificación.';
+        msg.innerHTML = 'No se pudo enviar el correo de verificación' + (emailError ? ' (<code>' + emailError + '</code>)' : '') + '.<br>Pulsa <strong>Reenviar correo</strong> para intentarlo de nuevo.';
     }
     document.querySelector('#modal-auth .auth_tabs').style.display = 'none';
     document.querySelectorAll('#modal-auth .auth_form').forEach(f => f.style.display = 'none');

@@ -130,8 +130,9 @@ export async function registrarUsuario(email, password, nombre) {
             creadoEn: new Date()
         });
         let emailEnviado = true;
-        try { await sendEmailVerification(user); } catch (e) { emailEnviado = false; }
-        return { success: true, user, requiresEmailVerification: true, emailEnviado };
+        let emailError = null;
+        try { await sendEmailVerification(user); } catch (e) { emailEnviado = false; emailError = e.code || e.message || 'desconocido'; console.error('[sendEmailVerification]', e); }
+        return { success: true, user, requiresEmailVerification: true, emailEnviado, emailError };
     } catch (error) {
         return { success: false, error: obtenerMensajeError(error.code) };
     }
@@ -228,6 +229,7 @@ export async function enviarEmailRecuperacion(email) {
         await sendPasswordResetEmail(auth, email);
         return { success: true };
     } catch (error) {
+        console.error('[sendPasswordResetEmail]', error);
         return { success: false, error: obtenerMensajeError(error.code) };
     }
 }
