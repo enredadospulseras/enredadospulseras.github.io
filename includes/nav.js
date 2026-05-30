@@ -899,6 +899,8 @@ function iniciarPollingVerificacion() {
             _pollingInterval = null;
             window._verificacionPendiente = false;
             window._mfaEnProceso = false;
+            const { activarPersistenciaLocal } = await import('/includes/firebase.js');
+            await activarPersistenciaLocal();
             ocultarVistaVerificacion();
             cerrarModal('modal-auth');
             const { data } = await obtenerDatosUsuario(user.uid);

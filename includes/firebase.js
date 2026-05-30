@@ -12,6 +12,7 @@ import {
     setPersistence,
     browserLocalPersistence,
     browserSessionPersistence,
+    inMemoryPersistence,
     sendPasswordResetEmail,
     sendEmailVerification,
     confirmPasswordReset,
@@ -118,8 +119,13 @@ export async function obtenerDatosUsuario(uid) {
 
 // ==================== AUTENTICACIÓN ====================
 
+export async function activarPersistenciaLocal() {
+    await setPersistence(auth, browserLocalPersistence);
+}
+
 export async function registrarUsuario(email, password, nombre) {
     try {
+        await setPersistence(auth, inMemoryPersistence);
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
         await updateProfile(user, { displayName: nombre });
